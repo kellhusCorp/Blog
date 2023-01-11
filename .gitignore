@@ -1,0 +1,10 @@
+.idea
+app.*
+bin/
+obj/
+*.user
+/src/*.user
+pgdata
+storage/
+logs/
+

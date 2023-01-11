@@ -1,0 +1,54 @@
+﻿@model MyBlogOnCore.Domain.Blog
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+<header>
+    <h3>
+        <a class="text-decoration-none" href="~/Blog/@Model?.Url">@Model?.Header</a>
+    </h3>
+    
+    <span class="text-muted">
+        <i class="fas fa-calendar-alt"></i> @Model!.PublishDate.DateTime.ToShortDateString()
+        
+        @if (Model.Author != null)
+        {
+            <i class="fas fa-user ml-md-4"></i>
+            @Model.Author.ToString()
+        }
+    </span>
+
+    <markdown Markdown="@Model.ShortContent"></markdown>
+    
+    <br class="d-md-none" />
+    <hr class="mt-1" />
+    <span class="text-muted">
+        
+        <i class="fas fa-comments ml-md-4"></i>
+        <a href="~/Blog/@Model.Url#Comments">@Model.Comments!.Count</a>
+        
+            <i class="fa fa-chart-line ml-md-4"></i>
+            @Model.VisitsNumber<text> @Localizer["Visits"]</text>
+
+            @if (Model.TagAssignments!.Count > 0)
+            {
+                int counter = -1;
+                <i class="fas fa-tags ml-md-4"></i>
+                @foreach (var tag in Model.TagAssignments.Select(t => t.Tag!.Name).OrderBy(t => t))
+                {
+                    counter++;
+                    string split = counter < Model.TagAssignments.Count - 1 ? ", " : string.Empty;
+                    <a asp-controller="Blog" asp-action="Index" asp-route-tag="@tag">@tag</a>@split
+
+                    split = "|";
+                }
+            }
+         @if (User.IsInRole("Admin"))
+         {
+             <span class="float-lg-right d-print-none">
+                 <a href="~/Blog/@Model.Url/Edit"><i class="fas fa-edit"></i></a>
+                 <a href="~/Blog/@Model.Url/Edit">@Localizer["Edit"]</a>
+             </span>
+         }
+    </span>
+    
+</header>
+

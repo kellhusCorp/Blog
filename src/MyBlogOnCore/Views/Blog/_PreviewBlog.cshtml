@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MyBlogOnCore.Domain.Blog
+
+<article class="mb-4 mt-4 mb-1">
+    <div class="container">
+        <div class="blog-area row">
+            <div class="col-md-4 text-center d-md-none d-none d-lg-block" style="vertical-align: center;">
+                <img src="/static/static_image_1.jpg" class="img-thumbnail"/>
+            </div>
+            <div class="col-md-8">
+                <partial name="_Header" model="@Model"/>
+            </div>
+        </div>
+    </div>
+</article>

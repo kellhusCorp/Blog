@@ -1,0 +1,90 @@
+﻿@using MyBlogOnCore.Infrastructure.Mvc
+@using MyBlogOnCore.BLL
+@using Microsoft.Extensions.Options
+@inject IOptionsMonitor<BlogSettings> BlogSettings
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+<!DOCTYPE html>
+<html class="administration" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - @BlogSettings.CurrentValue.BlogName</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="~/lib/bootstrap-nightshade/bootstrap-nightshade.min.css"/>
+    <meta name="theme-color" content="#2F5890">
+</head>
+<body>
+<script src="~/lib/jquery/jquery-3.6.1.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="https://kit.fontawesome.com/8f4f1a8c51.js" crossorigin="anonymous"></script>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="@Url.Action("Index", "Administration")">@Localizer["AdminPanelLabel"]</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <partial name="NavbarListItemAdmin"
+                         model="@(new NavbarListItemAdminViewModel("Index", "Home", ViewData["SelectedMenuItem"] as string == "Home", Localizer["ToHome"].Value))"/>
+                <partial name="NavbarListItemAdmin"
+                         model="@(new NavbarListItemAdminViewModel("Downloads", "Administration", ViewData["SelectedMenuItem"] as string == "Downloads", Localizer["Downloads"].Value))"/>
+
+                <partial name="NavbarListItemAdmin"
+                         model="@(new NavbarListItemAdminViewModel("Images", "Administration", ViewData["SelectedMenuItem"] as string == "Images", Localizer["Images"].Value))"/>
+
+                <partial name="NavbarListItemAdmin"
+                         model="@(new NavbarListItemAdminViewModel("Users", "Administration", ViewData["SelectedMenuItem"] as string == "Users", Localizer["Users"].Value))"/>
+
+                <li class="nav-item">
+                    <a id="darkmode-button" class="btn btn-outline-secondary">
+                        <i class="fa fa-moon"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="container">
+        
+        @if (TempData.ContainsKey(ControllerExtensions.SuccessMessage))
+        {
+            <div class="alert alert-primary">
+                @TempData[ControllerExtensions.SuccessMessage]
+            </div>
+        }
+        @if (TempData.ContainsKey(ControllerExtensions.WarningMessage))
+        {
+            <div class="alert alert-warning">
+                @TempData[ControllerExtensions.WarningMessage]
+            </div>
+        }
+        @if (TempData.ContainsKey(ControllerExtensions.ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                @TempData[ControllerExtensions.ErrorMessage]
+            </div>
+        }
+        
+        <h2>
+            @ViewData["Title"]
+        </h2>
+
+        @RenderBody()
+    </div>
+</div>
+
+<script src="~/lib/bootstrap-nightshade/darkmode.min.js"></script>
+@await RenderSectionAsync("Scripts", false)
+
+<script>
+  document.querySelector("#darkmode-button").onclick = function(e){
+    darkmode.toggleDarkMode();
+  }
+</script>
+</body>
+</html>

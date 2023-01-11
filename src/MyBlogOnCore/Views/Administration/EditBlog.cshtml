@@ -1,0 +1,134 @@
+﻿@model EditBlogViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    var existingEntry = !string.IsNullOrWhiteSpace(Model!.Blog.Header);
+    ViewBag.Title = "title";
+    Layout = "_LayoutAdministration";
+}
+
+@if (existingEntry)
+{
+    <div class="row d-print-none">
+        <div class="col-md-8 col-sm-12">
+            <a href="~/Blog/@Model.Blog.Url" title="Edit" class="btn btn-outline-primary"><i class="fa fa-globe"></i> @Localizer["Show blog entry"]</a>
+            <br /><br />
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-8 col-sm-12">
+        <h2>@Localizer["Content"]</h2>
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Blog.Header"></label>
+                <input asp-for="Blog.Header" class="form-control" />
+                <span asp-validation-for="Blog.Header" class="text-danger"></span>
+            </div>
+            @if (existingEntry)
+            {
+                <div class="form-group">
+                    <label asp-for="Blog.PermanentLink"></label>
+                    <input asp-for="Blog.PermanentLink" class="form-control" />
+                    <span asp-validation-for="Blog.PermanentLink" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="Blog.ShortContent"></label>
+                <textarea asp-for="Blog.ShortContent" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Blog.ShortContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Blog.AuthorId"></label>
+                <select asp-for="Blog.AuthorId" asp-items="Model.Authors.Select(a => new SelectListItem() { Value = a.Id, Text = a.ToString() })" class="form-control">
+                    <option value="">-</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Blog.TagAssignments"></label>
+                <select asp-for="SelectedTagNames" class="select2" multiple style="width: 100%">
+                    @foreach (var tag in Model.AllTags)
+                    {
+                        if (Model.SelectedTagNames.Any(t => t == tag.Name))
+                        {
+                            <option value="@tag.Name" selected>@tag.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@tag.Name">@tag.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group form-check">
+                <input asp-for="Blog.IsVisible" type="checkbox" class="form-check-input">
+                <label asp-for="Blog.IsVisible" class="form-check-label"></label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Blog.PublishDate"></label>
+                <input asp-for="Blog.PublishDate" class="form-control form-control-sm gijgodatetimepicker" type="text" value="@Model.Blog.PublishDate.ToString("dd.MM.yyyy HH:mm")" />
+                <span asp-validation-for="Blog.PublishDate" class="text-danger"></span>
+            </div>
+            <div class="form-group d-print-none">
+                <input asp-for="Blog.CreatedOn" type="hidden" />
+                <input asp-for="Blog.Id" type="hidden" />
+                <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-4 col-sm-12">
+        @if (existingEntry)
+        {
+            var blogEntryFileViewModel = new AddBlogFileViewModel()
+            {
+                BlogId = Model.Blog.Id
+            };
+
+            <h2>@Localizer["Files"]</h2>
+            <partial name="_AddBlogFile" model="@blogEntryFileViewModel" />
+            <br />
+
+            if (Model.Blog.Files!.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped table-sm">
+                        <colgroup>
+                            <col />
+                            <col style="width: 100px;" />
+                            <col style="width: 50px;" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(m => m.Blog.Files!.First().Name)</th>
+                                <th class="text-right">@Html.DisplayNameFor(m => m.Blog.Files!.First().Counter)</th>
+                                <th class="d-print-none"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var blogEntryFile in Model.Blog.Files)
+                            {
+                                <tr>
+                                    <td><a href="~/Blog/Download/@blogEntryFile.Id">@blogEntryFile.Name</a></td>
+                                    <td class="text-right">@blogEntryFile.Counter</td>
+                                    <td class="text-right d-print-none">
+                                        <a asp-controller="Administration" asp-action="DeleteBlogFile" asp-route-id="@blogEntryFile.Id" title="@Localizer["Delete"]" class="confirmdelete" data-confirmmessage="@Localizer["Really delete file?"]"><i class="fa fa-trash text-danger"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<script src="~/lib/ckeditor/ckeditor.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        CKEDITOR.replace("Blog_Body", {
+                extraPlugins: 'codesnippet',
+                filebrowserImageUploadUrl: '/Administration/UploadImage'
+        });
+    });
+</script>

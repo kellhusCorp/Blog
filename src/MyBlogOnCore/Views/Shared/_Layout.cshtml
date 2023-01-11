@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/lib/bootstrap-nightshade/bootstrap-nightshade.min.css"/>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Sedov Roman</a>
+            
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">Обо мне</a>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-area="" asp-controller="Administration" asp-action="Index" class="nav-link">
+                        <i class="fas fa-tools"></i>
+                    </a>
+                }
+
+                <a id="darkmode-button" class="btn btn-outline-secondary">
+                    <i class="fa fa-moon"></i>
+                </a>
+            </div>
+
+
+            <a class="d-sm-none" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+               aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<div class="container-fluid mb-3">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted" style="margin-top: auto;">
+    <div class="container">
+        &copy; 2022 - Sedov Roman
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="https://kit.fontawesome.com/8f4f1a8c51.js" crossorigin="anonymous"></script>
+<script src="~/lib/bootstrap-nightshade/darkmode.min.js"></script>
+@await RenderSectionAsync("Scripts", false)
+
+<script>
+  document.querySelector("#darkmode-button").onclick = function(e){
+    darkmode.toggleDarkMode();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+﻿@model NavbarListItemAdminViewModel
+
+<li class="nav-item @((bool) Model?.IsActive ? "link-active" : "")">
+    <a class="nav-link" asp-action="@Model.ActionName" asp-controller="@Model.ControllerName">
+        @Model?.Text
+    </a>
+</li>

@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MyBlogOnCore.Domain.Blog
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+<article class="mb-4 mt-4">
+    <div class="container">
+        <h2 class="text-center">
+            @Model?.Header
+        </h2>
+        <p class="text-center">
+            @if (Model.Author != null)
+            {
+                <i class="fas fa-user ml-md-4"></i>
+                @Model.Author.ToString()
+            }
+        </p>
+
+        <hr/>
+
+        <div class="d-flex justify-content-center" style="gap: 20px;">
+
+            <a href="~/Blog/@Model.Url#Comments" class="text-decoration-none">
+                <i class="fas fa-comments ml-md-4"></i> @Model.Comments!.Count
+            </a>
+            
+            <span class="text-muted">
+                <i class="fa fa-chart-line ml-md-4"></i> @Model.VisitsNumber @Localizer["Visits"]
+            </span>
+
+            @if (Model.TagAssignments!.Count > 0)
+            {
+                var counter = -1;
+                <div class="d-block">
+                    <i class="fas fa-tags ml-md-4"></i>
+
+                    @foreach (var tag in Model.TagAssignments.Select(t => t.Tag!.Name).OrderBy(t => t))
+                    {
+                        counter++;
+                        var split = counter < Model.TagAssignments.Count - 1 ? ", " : string.Empty;
+                        <a asp-controller="Blog" class="text-decoration-none" asp-action="Index" asp-route-tag="@tag">@tag</a>
+                        @split
+
+                        split = "|";
+                    }
+
+                </div>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <span class="float-lg-right d-print-none">
+                    <a href="~/Blog/@Model.Url/Edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="~/Blog/@Model.Url/Edit">@Localizer["Edit"]</a>
+                </span>
+            }
+        </div>
+    </div>
+</article>
