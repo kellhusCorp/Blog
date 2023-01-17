@@ -32,11 +32,17 @@
                     <span asp-validation-for="Blog.PermanentLink" class="text-danger"></span>
                 </div>
             }
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Blog.ShortContent"></label>
                 <textarea asp-for="Blog.ShortContent" class="form-control" rows="5"></textarea>
                 <span asp-validation-for="Blog.ShortContent" class="text-danger"></span>
             </div>
+            
+            <div class="form-group">
+                <textarea asp-for="Blog.Body" class="form-control" rows="10"></textarea>
+                <span asp-validation-for="Blog.Body" class="text-danger"></span>
+            </div>
+            
             <div class="form-group">
                 <label asp-for="Blog.AuthorId"></label>
                 <select asp-for="Blog.AuthorId" asp-items="Model.Authors.Select(a => new SelectListItem() { Value = a.Id, Text = a.ToString() })" class="form-control">
