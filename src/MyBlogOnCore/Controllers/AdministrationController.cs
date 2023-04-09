@@ -159,6 +159,11 @@ public class AdministrationController : BaseController
         return View(model);
     }
 
+    public async Task<IActionResult> Users(UsersViewModel model, Paging<User> paging)
+    {
+        
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> Images(ImagesViewModel model)
