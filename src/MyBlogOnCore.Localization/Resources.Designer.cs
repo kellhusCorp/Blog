@@ -178,6 +178,15 @@ namespace MyBlogOnCore.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No users found.
+        /// </summary>
+        public static string No_users_found {
+            get {
+                return ResourceManager.GetString("No users found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permanent link &apos;{0}&apos; already in use.
         /// </summary>
         public static string PermanentLinkInUse {

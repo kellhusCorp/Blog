@@ -78,4 +78,7 @@
     <data name="Users" xml:space="preserve">
         <value>Users</value>
     </data>
+    <data name="No users found" xml:space="preserve">
+        <value>No users found</value>
+    </data>
 </root>
