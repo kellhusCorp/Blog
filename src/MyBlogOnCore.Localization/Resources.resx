@@ -75,4 +75,7 @@
     <data name="ToHome" xml:space="preserve">
         <value>Home</value>
     </data>
+    <data name="Users" xml:space="preserve">
+        <value>Users</value>
+    </data>
 </root>

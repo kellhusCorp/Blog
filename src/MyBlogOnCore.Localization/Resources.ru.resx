@@ -68,4 +68,7 @@
     <data name="ToHome" xml:space="preserve">
         <value>Домой</value>
     </data>
+    <data name="Users" xml:space="preserve">
+        <value>Пользователи</value>
+    </data>
 </root>
