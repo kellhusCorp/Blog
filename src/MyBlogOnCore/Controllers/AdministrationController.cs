@@ -161,7 +161,30 @@ public class AdministrationController : BaseController
 
     public async Task<IActionResult> Users(UsersViewModel model, Paging<User> paging)
     {
-        
+        if (paging.SortColumn == null)
+        {
+            paging.SetSortExpression(x => x.LastName);
+        }
+
+        IQueryable<User> query = context.Users.AsNoTracking();
+
+        if (model.SearchTerm != null)
+        {
+            foreach (var part in model.SearchTerm.Replace(",", string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries)) 
+            {
+                if (part.Contains('@'))
+                {
+                    query = query.Where(x => x.Email.Contains(part));
+                }
+                else
+                {
+                    query = query.Where(x => x.LastName.Contains(part) || x.FirstName.Contains(part));
+                }
+            }
+        }
+
+        model.Users = await query.GetPagedResultAsync(paging);
+        return View(model);
     }
 
     [HttpPost]
