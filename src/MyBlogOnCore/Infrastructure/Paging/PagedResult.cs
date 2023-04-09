@@ -8,15 +8,15 @@ public class PagedResult<T> : IEnumerable<T>
 {
     public PagedResult()
     {
-        this.Items = new List<T>();
-        this.Paging = new Paging<T>();
+        Items = new List<T>();
+        Paging = new Paging<T>();
     }
     
     public PagedResult(IEnumerable<T> items, int totalNumberOfItems, Paging<T> paging)
     {
-        this.Items = items;
-        this.TotalNumberOfItems = totalNumberOfItems;
-        this.Paging = paging;
+        Items = items;
+        TotalNumberOfItems = totalNumberOfItems;
+        Paging = paging;
     }
 
     [DataMember]

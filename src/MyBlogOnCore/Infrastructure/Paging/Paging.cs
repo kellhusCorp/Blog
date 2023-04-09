@@ -13,21 +13,21 @@ public class Paging<T>
     
     public Paging(int skip, int top)
     {
-        this.SortDirection = SortDirection.Ascending;
-        this.Skip = skip;
-        this.Top = top;
+        SortDirection = SortDirection.Ascending;
+        Skip = skip;
+        Top = top;
     }
     
     public Paging(int skip, int top, string sortColumn)
         : this(skip, top)
     {
-        this.SortColumn = sortColumn;
+        SortColumn = sortColumn;
     }
     
     public Paging(int skip, int top, string sortColumn, SortDirection sortDirection)
         : this(skip, top, sortColumn)
     {
-        this.SortDirection = sortDirection;
+        SortDirection = sortDirection;
     }
     
     [DataMember]
@@ -37,7 +37,7 @@ public class Paging<T>
     public string? SortColumn { get; set; }
 
     [DataMember]
-    public List<SortCriteria<T>> AdditionalSortCriteria { get; } = new List<SortCriteria<T>>();
+    public List<SortCriteria<T>> AdditionalSortCriteria { get; } = new();
     
     [DataMember]
     public int Skip { get; set; }
@@ -47,7 +47,7 @@ public class Paging<T>
     
     public void SetSortExpression(Expression<Func<T, object>> expression)
     {
-        this.SortColumn = PropertyResolver.GetPropertyName(expression);
+        SortColumn = PropertyResolver.GetPropertyName(expression);
     }
     
     public override string ToString()
