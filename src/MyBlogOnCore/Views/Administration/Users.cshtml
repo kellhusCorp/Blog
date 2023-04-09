@@ -1,0 +1,9 @@
+﻿@model TModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Users"];
+    Layout = "_Layout";
+    ViewData["SelectedMenuItem"] = "Users";
+}
+
+
