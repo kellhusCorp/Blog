@@ -22,6 +22,10 @@
 - [AutoMapper](https://automapper.org/)
 - [Postgre](https://www.postgresql.org/)
 
+## File storage
+
+Хранение файлов реализовано путем, загрузку файлов в монтированную папку `./storage`, с разделением на файлы и изображения.
+
 ## Запуск
 
 `Первый вариант`, поднять инстанс `postgre`, создать БД `blog`, с владельцем `blog_user`. После чего, выполнить билдовку и запустить:
@@ -41,3 +45,8 @@ docker compose up
 ```
 
 Креды пользователя сайта `admin` указаны в `appsettings.Development.json`, креды `postgres`, указаны в `docker-compose.yml`
+
+
+## My instance
+
+Запущен инстанс https://kellhus.xyz/
