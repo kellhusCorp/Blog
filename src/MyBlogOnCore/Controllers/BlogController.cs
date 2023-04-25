@@ -148,13 +148,12 @@ public class BlogController : BaseController
             model.BlogEntry = entry;
             model.RelatedBlogEntries = await GetRelatedBlogEntries(entry);
         }
-
-        //TODO изменить логику формирования AdminPost
+        
         var comment = new Comment(model.Comment.Name, model.Comment.Comment)
         {
             Email = model.Comment.Email,
             Homepage = model.Comment.Homepage,
-            AdminPost = User.Identity is {IsAuthenticated: true},
+            AdminPost = User.Identity is {IsAuthenticated: true} && User.IsInRole("Admin"),
             BlogId = entry.Id
         };
 
