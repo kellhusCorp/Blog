@@ -5,6 +5,7 @@ stages:
 
 build_job:
   stage: build
-  tag: lemon
+  tags: 
+    - tags
   script:
     - 'dotnet build'
