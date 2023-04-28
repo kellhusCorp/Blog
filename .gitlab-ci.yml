@@ -8,4 +8,4 @@ build_job:
   tags: 
     - lemon
   script:
-    - 'dotnet build'
+    - 'dotnet build ./src/MyBlogOnCore.sln'
