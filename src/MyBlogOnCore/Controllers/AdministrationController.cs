@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using MyBlogOnCore.BLL.Commands;
 using MyBlogOnCore.BLL.Exceptions;
 using MyBlogOnCore.BLL.Handlers;
 using MyBlogOnCore.BLL.Services;
+using MyBlogOnCore.BLL.Settings;
 using MyBlogOnCore.DataSource.Contexts;
 using MyBlogOnCore.Domain;
 using MyBlogOnCore.Infrastructure.Paging;
@@ -20,26 +22,26 @@ namespace MyBlogOnCore.Controllers;
 [Authorize(Roles = "Admin")]
 public class AdministrationController : BaseController
 {
-    private readonly IBlogService<Blog> blogService;
     private readonly BlogDbContext context;
     private readonly string imagesRootDirectory;
     private readonly IImageStorageService imageStorageService;
     private readonly ICommandHandler<AddOrUpdateBlogFileCommand> addOrUpdateBlogFileCommandHandler;
+    private readonly IMediator _mediator;
     private readonly UserManager<User> userManager;
 
     public AdministrationController(
         BlogDbContext context,
         UserManager<User> userManager,
-        IBlogService<Blog> blogService,
         IImageStorageService imageStorageService,
         IOptionsMonitor<StorageServicesSettings> servicesSettings,
-        ICommandHandler<AddOrUpdateBlogFileCommand> addOrUpdateBlogFileCommandHandler) : base(context)
+        ICommandHandler<AddOrUpdateBlogFileCommand> addOrUpdateBlogFileCommandHandler,
+        IMediator mediator) : base(context)
     {
         this.context = context;
         this.userManager = userManager;
-        this.blogService = blogService;
         this.imageStorageService = imageStorageService;
         this.addOrUpdateBlogFileCommandHandler = addOrUpdateBlogFileCommandHandler;
+        _mediator = mediator;
         imagesRootDirectory = servicesSettings.CurrentValue.ImagesRootDirectory;
     }
 
@@ -114,7 +116,10 @@ public class AdministrationController : BaseController
     [Route("[controller]/editblog")]
     public async Task<ActionResult> EditBlog(string? id, EditBlogViewModel model)
     {
-        if (id == null && model.Blog.PermanentLink == null) ModelState.Remove($"{nameof(EditBlogViewModel.Blog)}.{nameof(EditBlogViewModel.Blog.PermanentLink)}");
+        if (id == null && model.Blog.PermanentLink == null)
+        {
+            ModelState.Remove($"{nameof(EditBlogViewModel.Blog)}.{nameof(EditBlogViewModel.Blog.PermanentLink)}");
+        }
 
         if (!ModelState.IsValid)
         {
@@ -124,9 +129,7 @@ public class AdministrationController : BaseController
 
         try
         {
-            await blogService.AddOrUpdate(
-                model.Blog,
-                model.SelectedTagNames);
+            await _mediator.Send(new AddOrUpdateBlogCommand(model.Blog, model.SelectedTagNames));
         }
         catch (BusinessException ex)
         {

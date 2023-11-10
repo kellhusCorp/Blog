@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlogOnCore.DataSource", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlogOnCore.BLL", "MyBlogOnCore.BLL\MyBlogOnCore.BLL.csproj", "{7FFB3E35-B1D2-4316-B648-554D108C212A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetBlog.Infrastructure", "PetBlog.Infrastructure\PetBlog.Infrastructure.csproj", "{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{7FFB3E35-B1D2-4316-B648-554D108C212A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FFB3E35-B1D2-4316-B648-554D108C212A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FFB3E35-B1D2-4316-B648-554D108C212A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

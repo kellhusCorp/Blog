@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyBlogOnCore.BLL;
 using MyBlogOnCore.BLL.Commands;
 using MyBlogOnCore.BLL.Handlers;
+using MyBlogOnCore.BLL.Providers;
 using MyBlogOnCore.BLL.Services;
 using MyBlogOnCore.DataSource.Contexts;
 using MyBlogOnCore.Domain;
@@ -16,24 +19,38 @@ public class BlogController : BaseController
     private const int EntriesPerPage = 10;
     
     private readonly BlogDbContext context;
-    private readonly IBlogService<Blog> blogService;
     private readonly ICommandHandler<AddCommentCommand> addCommentHandler;
     private readonly ICommandHandler<IncrementBlogFileCounterCommand> incrementBlogFileCounterCommandHandler;
     private readonly IBlogFileProvider blogFileProvider;
+    private readonly IMediator _mediator;
 
     public BlogController(
         BlogDbContext context,
-        IBlogService<Blog> blogService,
         ICommandHandler<AddCommentCommand> addCommentHandler, 
         ICommandHandler<IncrementBlogFileCounterCommand> incrementBlogFileCounterCommandHandler,
-        IBlogFileProvider blogFileProvider) 
+        IBlogFileProvider blogFileProvider,
+        IMediator mediator) 
         : base(context)
     {
         this.context = context;
-        this.blogService = blogService;
         this.addCommentHandler = addCommentHandler;
         this.incrementBlogFileCounterCommandHandler = incrementBlogFileCounterCommandHandler;
         this.blogFileProvider = blogFileProvider;
+        _mediator = mediator;
+    }
+
+    [Authorize(Roles = "Admin")]
+    [Route("[controller]/[action]")]
+    public async Task<IActionResult> DeleteComment(Guid commentId, string? back)
+    {
+        await _mediator.Send(new DeleteCommentCommand(commentId));
+
+        if (back != null && !string.IsNullOrEmpty(back) && Url.IsLocalUrl(back))
+        {
+            return Redirect(back);
+        }
+        
+        return RedirectToAction(nameof(Index));
     }
     
     [Route("")]
@@ -107,24 +124,23 @@ public class BlogController : BaseController
     [Route("[controller]/{year:int}/{month:int}/{day:int}/{id}")]
     public async Task<IActionResult> Entry(string id)
     {
-        var entry = await GetByPermanentLink(id);
+        var blog = await GetByPermanentLink(id);
 
-        if (entry == null)
+        if (blog == null)
         {
             return NotFound();
         }
 
         if (User.Identity == null || !User.Identity.IsAuthenticated)
         {
-            await blogService.IncrementVisitsNumber(entry.Id);
-
-            entry.VisitsNumber++;
+            await _mediator.Send(new IncrementVisitsNumberCommand(blog.Id));
+            blog.VisitsNumber++;
         }
 
         return View(new BlogViewModel
         {
-            BlogEntry = entry,
-            RelatedBlogEntries = await GetRelatedBlogEntries(entry)
+            BlogEntry = blog,
+            RelatedBlogEntries = await GetRelatedBlogEntries(blog)
         });
     }
 

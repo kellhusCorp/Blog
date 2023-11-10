@@ -30,6 +30,8 @@ public class BlogDbContext : IdentityDbContext<User>, IMigratoryContext
     public virtual DbSet<Tag> Tags { get; set; }
 
     public virtual DbSet<TagAssignment> TagAssignments { get; set; }
+    
+    public DbSet<Page?> Pages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -48,6 +50,33 @@ public class BlogDbContext : IdentityDbContext<User>, IMigratoryContext
         builder.Entity<Tag>()
             .HasIndex(m => new { m.Name })
             .IsUnique(true);
+
+        builder.Entity<Page>()
+            .HasIndex(x => new { x.Name })
+            .IsUnique();
+
+        builder.Entity<Page>(typeBuilder =>
+        {
+            typeBuilder.HasIndex(x => new { x.Name })
+                .IsUnique();
+
+            typeBuilder.Property(x => x.Name)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            typeBuilder.Property(x => x.Body)
+                .IsRequired();
+
+            typeBuilder.Property(x => x.ShortTitle)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            typeBuilder.Property(x => x.Title)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            typeBuilder.ToTable("Pages");
+        });
 
         base.OnModelCreating(builder);
     }

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using MyBlogOnCore.BLL;
+using MyBlogOnCore.BLL.Settings;
 using MyBlogOnCore.Domain;
 
 namespace MyBlogOnCore.Areas.Identity.Pages.Account

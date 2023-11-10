@@ -74,4 +74,16 @@
     <data name="No users found" xml:space="preserve">
         <value>Пользователей ещё нет</value>
     </data>
+    <data name="BlogHeader" xml:space="preserve">
+        <value>Заголовок блога</value>
+    </data>
+    <data name="BlogShortContent" xml:space="preserve">
+        <value>Краткое описание блога</value>
+    </data>
+    <data name="BlogPublishDate" xml:space="preserve">
+        <value>Дата публикации</value>
+    </data>
+    <data name="BlogIsVisible" xml:space="preserve">
+        <value>Блог видимый?</value>
+    </data>
 </root>
