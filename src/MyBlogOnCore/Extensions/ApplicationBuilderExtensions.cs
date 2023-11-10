@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MyBlogOnCore.BLL.Exceptions;
 using MyBlogOnCore.DataSource.Contexts;
 using MyBlogOnCore.Domain;
-using MyBlogOnCore.Exceptions;
 using MyBlogOnCore.Options;
 using MyBlogOnCore.Validators;
 

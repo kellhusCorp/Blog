@@ -1,0 +1,17 @@
+﻿@model MyBlogOnCore.BLL.Dtos.PageDto
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "_Layout";
+}
+
+<div class="container">
+
+    <h2 class="text-center">
+        @Model.ShortTitle
+    </h2>
+
+    <hr/>
+
+    @Html.Raw(Model.Body)
+</div>

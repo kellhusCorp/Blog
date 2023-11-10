@@ -7,11 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PetBlog.Infrastructure\PetBlog.Infrastructure.csproj" />
       <ProjectReference Include="..\MyBlogOnCore.DataSource\MyBlogOnCore.DataSource.csproj" />
       <ProjectReference Include="..\MyBlogOnCore.Domain\MyBlogOnCore.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="12.0.1" />
+      <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
+      <PackageReference Include="MediatR" Version="12.1.1" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     </ItemGroup>
 

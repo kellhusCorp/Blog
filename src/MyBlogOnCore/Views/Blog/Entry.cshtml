@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model BlogViewModel
+﻿@model BlogViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
     ViewData["Title"] = Model!.BlogEntry.Header;
@@ -102,44 +101,46 @@
         <button type="submit" class="btn btn-primary">@Localizer["Submit"]</button>
     </div>
 </form>
-        
-<div class="row">
-    @foreach (var comment in Model.BlogEntry.Comments!.OrderByDescending(b => b.CreatedOn))
-    {
-        var adminPostClass = comment.AdminPost ? "text-danger" : string.Empty;
-        
-        <hr class="mt-4 mb-4"/>
-        
-        <div class="mt-4">
-            <div class="d-flex justify-content-start align-items-center gap-4">
-                <i class="fa-solid fa-user fa-2x"></i>
-                <div>
-                    <h3 class="@adminPostClass">@comment.Name</h3>
-                    <span class="text-muted">
-                        <i class="fas fa-calendar-alt"></i> @comment.CreatedOn.DateTime.ToShortDateString()
-                        @if (comment.Homepage != null)
-                        {
-                            <br class="d-md-none"/>
-                            <i class="fas fa-link ml-md-4"></i>
-                            @comment.Homepage
-                        }
-                        @if (User.Identity != null && User.Identity.IsAuthenticated)
-                        {
-                            <br class="d-md-none"/>
-                    
-                            <span class="float-lg-right d-print-none">
-                                <a asp-controller="Blog" asp-action="DeleteComment" asp-route-id="@comment.Id" class="text-danger confirmdelete" data-confirmmessage="@Localizer["Really delete comment?"]"><i class="fas fa-trash"></i></a>
-                                <a asp-controller="Blog" asp-action="DeleteComment" asp-route-id="@comment.Id" class="text-danger confirmdelete" data-confirmmessage="@Localizer["Really delete comment?"]">@Localizer["Delete"]</a>
-                            </span>
-                        }
-                    </span>
-                </div>
-            </div>
+ 
+<section id="comments">
+    <div class="row">
+        @foreach (var comment in Model.BlogEntry.Comments!.OrderByDescending(b => b.CreatedOn))
+        {
+            var adminPostClass = comment.AdminPost ? "text-danger" : string.Empty;
             
-            <p class="float-left mb-4" style="word-break: break-all;">@comment.Body</p>
-        </div>
-    }
-</div>
+            <hr class="mt-4 mb-4"/>
+            
+            <div class="mt-4">
+                <div class="d-flex justify-content-start align-items-center gap-4">
+                    <i class="fa-solid fa-user fa-2x"></i>
+                    <div>
+                        <h3 class="@adminPostClass">@comment.Name</h3>
+                        <span class="text-muted">
+                            <i class="fas fa-calendar-alt"></i> @comment.CreatedOn.DateTime.ToShortDateString()
+                            @if (comment.Homepage != null)
+                            {
+                                <br class="d-md-none"/>
+                                <i class="fas fa-link ml-md-4"></i>
+                                @comment.Homepage
+                            }
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <br class="d-md-none"/>
+                        
+                                <span class="float-lg-right d-print-none">
+                                    <a asp-controller="Blog" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-back="@(Url.Action("Entry", "Blog", new { Model.BlogEntry.PermanentLink }))#comments" class="text-danger confirmdelete" data-confirmmessage="@Localizer["Really delete comment?"]"><i class="fas fa-trash"></i></a>
+                                    <a asp-controller="Blog" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-back="@Url.Action("Entry", "Blog", new { Model.BlogEntry.PermanentLink })#comments" class="text-danger confirmdelete" data-confirmmessage="@Localizer["Really delete comment?"]">@Localizer["Delete"]</a>
+                                </span>
+                            }
+                        </span>
+                    </div>
+                </div>
+                
+                <p class="float-left mb-4" style="word-break: break-all;">@comment.Body</p>
+            </div>
+        }
+    </div>
+</section>
 
 </div>
 

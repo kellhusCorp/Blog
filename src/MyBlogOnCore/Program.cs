@@ -1,17 +1,16 @@
 using System.Globalization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using MyBlogOnCore.BLL;
 using MyBlogOnCore.BLL.Handlers;
-using MyBlogOnCore.BLL.Services;
+using MyBlogOnCore.BLL.Settings;
 using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
 using MyBlogOnCore.Extensions;
+using MyBlogOnCore.Middlewares;
 using MyBlogOnCore.Options;
-using MyBlogOnCore.Repository;
+using MyBlogOnCore.Profiles;
 using NLog;
 using NLog.Web;
 
@@ -27,6 +26,8 @@ builder.Host.ConfigureLogging(logging =>
     })
     .UseNLog();
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.Configure<BlogSettings>(builder.Configuration.GetSection("BlogSettings"));
 builder.Services.Configure<StorageServicesSettings>(builder.Configuration.GetSection("StorageServicesSettings"));
 
@@ -34,73 +35,29 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<BlogDbContext>();
+builder.Services.AddIdentity();
 
 builder.Services.AddLocalization();
 
 builder.Services.AddControllersWithViews()
-    .AddViewLocalization(options => options.ResourcesPath = "Resources");
+    .AddViewLocalization();
 
-builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddDomainServices();
 
-builder.Services.AddScoped<IBlogService<Blog>, BlogService>();
-builder.Services.AddScoped<IImageStorageService, ImageStorageService>();
+builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(AddOrUpdateBlogHandler).Assembly));
 
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddTransient<IImageFileProvider, ImageFileProvider>();
-builder.Services.AddTransient<IBlogFileProvider, BlogFileProvider>();
-
-foreach (var serviceType in typeof(ICommandHandler<>).Assembly.GetTypes())
+builder.Services.AddAutoMapper(expression =>
 {
-    if (serviceType.IsAbstract || serviceType.IsInterface || serviceType.BaseType == null)
-    {
-        continue;
-    }
+    expression.AddProfile<PageProfile>();
+});
 
-    foreach (var interfaceType in serviceType.GetInterfaces())
-    {
-        if (interfaceType.IsGenericType && typeof(ICommandHandler<>).IsAssignableFrom(interfaceType.GetGenericTypeDefinition()))
-        {
-            builder.Services.AddScoped(interfaceType, serviceType);
-            break;
-        }
-    }
-}
+builder.Services.AddLegacyHandlers();
 
 var app = builder.Build();
 
-AddDirectoryForCustomStaticFiles();
+app.ConfigureStaticFiles();
 
-void AddDirectoryForCustomStaticFiles()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var storageServicesSettings = scope.ServiceProvider.GetService<IOptionsMonitor<StorageServicesSettings>>();
-
-        var correctlyPathToImages = storageServicesSettings.CurrentValue.InvariantImageRootDirectory;
-
-        var correctlyPathToFiles = storageServicesSettings.CurrentValue.InvariantFilesRootDirectory;
-
-        var absolutePathToImages = Path.Combine(builder.Environment.ContentRootPath, correctlyPathToImages);
-        Directory.CreateDirectory(absolutePathToImages);
-        var absolutePathToFiles = Path.Combine(builder.Environment.ContentRootPath, correctlyPathToFiles);
-        Directory.CreateDirectory(absolutePathToFiles);
-
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            FileProvider = new PhysicalFileProvider(absolutePathToImages),
-            RequestPath = storageServicesSettings.CurrentValue.ImagesRootDirectory
-        });
-
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            FileProvider = new PhysicalFileProvider(absolutePathToFiles),
-            RequestPath = storageServicesSettings.CurrentValue.FilesRootDirectory
-        });
-    }
-}
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.ApplyMigration<BlogDbContext>();
 

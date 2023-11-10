@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,27 +11,29 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow header">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Sedov Roman</a>
-            
+
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">Обо мне</a>
-
-                @if (User.IsInRole("Admin"))
-                {
-                    <a asp-area="" asp-controller="Administration" asp-action="Index" class="nav-link">
-                        <i class="fas fa-tools"></i>
-                    </a>
-                }
+                <div id="navbar-sub-menu" class="d-lg-flex d-md-flex d-sm-flex d-block justify-content-start">
+                    
+                    <a class="btn btn-outline-secondary" href="~/static/resume.pdf">Резюме</a>
+                    
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-area="" asp-controller="Administration" asp-action="Index" class="nav-link">
+                            <i class="fas fa-tools"></i>
+                        </a>
+                    }
+                </div>
 
                 <a id="darkmode-button" class="btn btn-outline-secondary">
                     <i class="fa fa-moon"></i>
                 </a>
             </div>
-
-
+            
             <a class="d-sm-none" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa-solid fa-bars"></i>
@@ -49,12 +50,12 @@
 
 <footer class="border-top footer text-muted" style="margin-top: auto;">
     <div class="container">
-        &copy; 2022 - Sedov Roman
+        &copy; @DateTime.Now.Year.ToString() - Sedov Roman
     </div>
 </footer>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="https://kit.fontawesome.com/8f4f1a8c51.js" crossorigin="anonymous"></script>
 <script src="~/lib/bootstrap-nightshade/darkmode.min.js"></script>
@@ -64,6 +65,16 @@
   document.querySelector("#darkmode-button").onclick = function(e){
     darkmode.toggleDarkMode();
   }
+  
+  $.ajax({
+    url: "/api/pages/",
+    type: "GET",
+    success: function (data) {
+        data.forEach(function (page) {
+            $('#navbar-sub-menu').prepend('<a class="nav-link" href="/pages/' + page.name + '">' + page.title + '</a>');
+        });
+    }
+  });
 </script>
 </body>
 </html>
