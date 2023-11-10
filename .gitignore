@@ -7,4 +7,5 @@ obj/
 pgdata
 storage/
 logs/
-
+node_modules/
+.env
