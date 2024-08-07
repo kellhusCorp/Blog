@@ -1,7 +1,7 @@
-using MyBlogOnCore.BLL.Commands;
-using MyBlogOnCore.DataSource.Contexts;
+using Blog.BLL.Commands;
+using Blog.Infrastructure.Contexts;
 
-namespace MyBlogOnCore.BLL.Handlers;
+namespace Blog.BLL.Handlers;
 
 public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand>
 {

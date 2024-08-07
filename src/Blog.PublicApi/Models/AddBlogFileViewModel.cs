@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MyBlogOnCore.Localization;
+using Blog.Localization;
 
 namespace MyBlogOnCore.Models;
 

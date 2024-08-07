@@ -1,7 +1,7 @@
-﻿@model EditBlogViewModel
+﻿@model Blog.PublicApi.Models.EditPostViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
-    var existingEntry = !string.IsNullOrWhiteSpace(Model!.Blog.Header);
+    var existingEntry = !string.IsNullOrWhiteSpace(Model!.Post.Header);
     ViewBag.Title = "title";
     Layout = "_LayoutAdministration";
 }
@@ -10,7 +10,7 @@
 {
     <div class="row d-print-none">
         <div class="col-md-8 col-sm-12">
-            <a href="~/Blog/@Model.Blog.Url" title="Edit" class="btn btn-outline-primary"><i class="fa fa-globe"></i> @Localizer["Show blog entry"]</a>
+            <a href="~/Blog/@Model.Post.Url" title="Edit" class="btn btn-outline-primary"><i class="fa fa-globe"></i> @Localizer["Show blog entry"]</a>
             <br /><br />
         </div>
     </div>
@@ -20,37 +20,37 @@
         <h2>@Localizer["Content"]</h2>
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label asp-for="Blog.Header"></label>
-                <input asp-for="Blog.Header" class="form-control" />
-                <span asp-validation-for="Blog.Header" class="text-danger"></span>
+                <label asp-for="Post.Header"></label>
+                <input asp-for="Post.Header" class="form-control" />
+                <span asp-validation-for="Post.Header" class="text-danger"></span>
             </div>
             @if (existingEntry)
             {
                 <div class="form-group">
-                    <label asp-for="Blog.PermanentLink"></label>
-                    <input asp-for="Blog.PermanentLink" class="form-control" />
-                    <span asp-validation-for="Blog.PermanentLink" class="text-danger"></span>
+                    <label asp-for="Post.PermanentLink"></label>
+                    <input asp-for="Post.PermanentLink" class="form-control" />
+                    <span asp-validation-for="Post.PermanentLink" class="text-danger"></span>
                 </div>
             }
             <div class="form-group mb-3">
-                <label asp-for="Blog.ShortContent"></label>
-                <textarea asp-for="Blog.ShortContent" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="Blog.ShortContent" class="text-danger"></span>
+                <label asp-for="Post.ShortContent"></label>
+                <textarea asp-for="Post.ShortContent" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Post.ShortContent" class="text-danger"></span>
             </div>
             
             <div class="form-group">
-                <textarea asp-for="Blog.Body" class="form-control" rows="10"></textarea>
-                <span asp-validation-for="Blog.Body" class="text-danger"></span>
+                <textarea asp-for="Post.Body" class="form-control" rows="10"></textarea>
+                <span asp-validation-for="Post.Body" class="text-danger"></span>
             </div>
             
             <div class="form-group">
-                <label asp-for="Blog.AuthorId"></label>
-                <select asp-for="Blog.AuthorId" asp-items="Model.Authors.Select(a => new SelectListItem() { Value = a.Id, Text = a.ToString() })" class="form-control">
+                <label asp-for="Post.AuthorId"></label>
+                <select asp-for="Post.AuthorId" asp-items="Model.Authors.Select(a => new SelectListItem() { Value = a.Id, Text = a.ToString() })" class="form-control">
                     <option value="">-</option>
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="Blog.TagAssignments"></label>
+                <label asp-for="Post.TagAssignments"></label>
                 <select asp-for="SelectedTagNames" class="select2" multiple style="width: 100%">
                     @foreach (var tag in Model.AllTags)
                     {
@@ -66,17 +66,17 @@
                 </select>
             </div>
             <div class="form-group form-check">
-                <input asp-for="Blog.IsVisible" type="checkbox" class="form-check-input">
-                <label asp-for="Blog.IsVisible" class="form-check-label"></label>
+                <input asp-for="Post.IsVisible" type="checkbox" class="form-check-input">
+                <label asp-for="Post.IsVisible" class="form-check-label"></label>
             </div>
             <div class="form-group">
-                <label asp-for="Blog.PublishDate"></label>
-                <input asp-for="Blog.PublishDate" class="form-control form-control-sm gijgodatetimepicker" type="text" value="@Model.Blog.PublishDate.ToString("dd.MM.yyyy HH:mm")" />
-                <span asp-validation-for="Blog.PublishDate" class="text-danger"></span>
+                <label asp-for="Post.PublishDate"></label>
+                <input asp-for="Post.PublishDate" class="form-control form-control-sm gijgodatetimepicker" type="text" value="@Model.Post.PublishDate.ToString("dd.MM.yyyy HH:mm")" />
+                <span asp-validation-for="Post.PublishDate" class="text-danger"></span>
             </div>
             <div class="form-group d-print-none">
-                <input asp-for="Blog.CreatedOn" type="hidden" />
-                <input asp-for="Blog.Id" type="hidden" />
+                <input asp-for="Post.CreatedOn" type="hidden" />
+                <input asp-for="Post.Id" type="hidden" />
                 <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
             </div>
         </form>
@@ -86,14 +86,14 @@
         {
             var blogEntryFileViewModel = new AddBlogFileViewModel()
             {
-                BlogId = Model.Blog.Id
+                BlogId = Model.Post.Id
             };
 
             <h2>@Localizer["Files"]</h2>
             <partial name="_AddBlogFile" model="@blogEntryFileViewModel" />
             <br />
 
-            if (Model.Blog.Files!.Count > 0)
+            if (Model.Post.Files!.Count > 0)
             {
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped table-sm">
@@ -104,13 +104,13 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th>@Html.DisplayNameFor(m => m.Blog.Files!.First().Name)</th>
-                                <th class="text-right">@Html.DisplayNameFor(m => m.Blog.Files!.First().Counter)</th>
+                                <th>@Html.DisplayNameFor(m => m.Post.Files!.First().Name)</th>
+                                <th class="text-right">@Html.DisplayNameFor(m => m.Post.Files!.First().Counter)</th>
                                 <th class="d-print-none"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var blogEntryFile in Model.Blog.Files)
+                            @foreach (var blogEntryFile in Model.Post.Files)
                             {
                                 <tr>
                                     <td><a href="~/Blog/Download/@blogEntryFile.Id">@blogEntryFile.Name</a></td>

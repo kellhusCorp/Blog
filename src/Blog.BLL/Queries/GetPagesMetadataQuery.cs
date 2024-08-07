@@ -1,10 +1,10 @@
-﻿using MediatR;
-using MyBlogOnCore.BLL.Dtos;
-using PetBlog.Infrastructure.Types;
+﻿using Blog.BLL.Dtos;
+using Blog.Domain;
+using MediatR;
 
-namespace MyBlogOnCore.BLL.Queries
+namespace Blog.BLL.Queries
 {
-    public class GetPagesMetadataQuery : IRequest<OperationResult<IEnumerable<PageMetadataDto>>>
+    public class GetPagesMetadataQuery : IRequest<Result<IEnumerable<PageMetadataDto>>>
     {
         
     }

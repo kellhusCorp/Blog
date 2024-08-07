@@ -5,6 +5,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using Blog.BLL.Settings;
+using Blog.Domain;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -12,9 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using MyBlogOnCore.BLL;
-using MyBlogOnCore.BLL.Settings;
-using MyBlogOnCore.Domain;
 
 namespace MyBlogOnCore.Areas.Identity.Pages.Account
 {

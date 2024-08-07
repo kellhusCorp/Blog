@@ -1,6 +1,6 @@
-﻿using MyBlogOnCore.Domain;
+﻿using Blog.Domain;
 
-namespace MyBlogOnCore.BLL.Commands;
+namespace Blog.BLL.Commands;
 
 public class AddCommentCommand
 {

@@ -1,4 +1,4 @@
-﻿namespace MyBlogOnCore.BLL.Dtos
+﻿namespace Blog.BLL.Dtos
 {
     public record PageDto
     {

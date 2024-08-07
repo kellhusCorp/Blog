@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL.Commands;
-using MyBlogOnCore.DataSource.Contexts;
+﻿using Blog.BLL.Commands;
+using Blog.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
-namespace MyBlogOnCore.BLL.Handlers;
+namespace Blog.BLL.Handlers;
 
 public class IncrementBlogFileCounterCommandHandler : ICommandHandler<IncrementBlogFileCounterCommand>
 {

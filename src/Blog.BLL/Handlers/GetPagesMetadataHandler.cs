@@ -1,13 +1,13 @@
-﻿using MediatR;
+﻿using Blog.BLL.Dtos;
+using Blog.BLL.Queries;
+using Blog.BLL.Repositories;
+using Blog.Domain;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL.Dtos;
-using MyBlogOnCore.BLL.Queries;
-using MyBlogOnCore.BLL.Repositories;
-using PetBlog.Infrastructure.Types;
 
-namespace MyBlogOnCore.BLL.Handlers
+namespace Blog.BLL.Handlers
 {
-    public class GetPagesMetadataHandler : IRequestHandler<GetPagesMetadataQuery, OperationResult<IEnumerable<PageMetadataDto>>>
+    public class GetPagesMetadataHandler : IRequestHandler<GetPagesMetadataQuery, Result<IEnumerable<PageMetadataDto>>>
     {
         private readonly IPagesRepository _pagesRepository;
 
@@ -16,9 +16,9 @@ namespace MyBlogOnCore.BLL.Handlers
             _pagesRepository = pagesRepository;
         }
 
-        public Task<OperationResult<IEnumerable<PageMetadataDto>>> Handle(GetPagesMetadataQuery request, CancellationToken cancellationToken)
+        public Task<Result<IEnumerable<PageMetadataDto>>> Handle(GetPagesMetadataQuery request, CancellationToken cancellationToken)
         {
-            var result = new OperationResult<IEnumerable<PageMetadataDto>>();
+            var result = new Result<IEnumerable<PageMetadataDto>>();
 
             var metadata = _pagesRepository.GetAll().AsNoTracking()
                 .Select(x => new PageMetadataDto(x.Name, x.Title));

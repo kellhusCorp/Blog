@@ -6,11 +6,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Domain", "src\Blog.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Localization", "src\Blog.Localization\Blog.Localization.csproj", "{8CEA856C-7E2F-4047-9DF4-75B018DFE499}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.DataSource", "src\Blog.DataSource\Blog.DataSource.csproj", "{29A57EC9-7782-440B-BA35-16036C396A46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Infrastructure", "src\Blog.Infrastructure\Blog.Infrastructure.csproj", "{29A57EC9-7782-440B-BA35-16036C396A46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.BLL", "src\Blog.BLL\Blog.BLL.csproj", "{7FFB3E35-B1D2-4316-B648-554D108C212A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Infrastructure", "src\Blog.Infrastructure\Blog.Infrastructure.csproj", "{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{6536AEDA-3C7D-4DB6-96F8-02F81DFAB4DA}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		.gitignore = .gitignore
 		docker-compose.override.yml = docker-compose.override.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Application", "Blog.Application\Blog.Application.csproj", "{040B5573-7CBD-4907-AF5A-83EB58C75318}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +45,9 @@ Global
 		{7FFB3E35-B1D2-4316-B648-554D108C212A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FFB3E35-B1D2-4316-B648-554D108C212A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FFB3E35-B1D2-4316-B648-554D108C212A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040B5573-7CBD-4907-AF5A-83EB58C75318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040B5573-7CBD-4907-AF5A-83EB58C75318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040B5573-7CBD-4907-AF5A-83EB58C75318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040B5573-7CBD-4907-AF5A-83EB58C75318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

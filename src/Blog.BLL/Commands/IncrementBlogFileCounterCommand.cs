@@ -1,4 +1,4 @@
-﻿namespace MyBlogOnCore.BLL.Commands;
+﻿namespace Blog.BLL.Commands;
 
 public class IncrementBlogFileCounterCommand
 {

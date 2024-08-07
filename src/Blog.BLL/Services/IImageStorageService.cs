@@ -1,4 +1,4 @@
-﻿namespace MyBlogOnCore.BLL.Services;
+﻿namespace Blog.BLL.Services;
 
 public interface IImageStorageService
 {

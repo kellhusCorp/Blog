@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using MyBlogOnCore.BLL.Exceptions;
+using Blog.BLL.Exceptions;
 
 namespace MyBlogOnCore.Middlewares
 {

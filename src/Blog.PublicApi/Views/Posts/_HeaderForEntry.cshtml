@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model MyBlogOnCore.Domain.Blog
+@model Blog.Domain.Post
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 <article class="mb-4 mt-4">
@@ -37,7 +37,7 @@
                     {
                         counter++;
                         var split = counter < Model.TagAssignments.Count - 1 ? ", " : string.Empty;
-                        <a asp-controller="Blog" class="text-decoration-none" asp-action="Index" asp-route-tag="@tag">@tag</a>
+                        <a asp-controller="Posts" class="text-decoration-none" asp-action="Index" asp-route-tag="@tag">@tag</a>
                         @split
 
                         split = "|";

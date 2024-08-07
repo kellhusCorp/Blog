@@ -1,4 +1,4 @@
-﻿@model MyBlogOnCore.Domain.Blog
+﻿@model Blog.Domain.Post
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 <header>
@@ -23,7 +23,7 @@
     <span class="text-muted">
         
         <i class="fas fa-comments ml-md-4"></i>
-        <a href="~/Blog/@Model.Url#Comments">@Model.Comments!.Count</a>
+        <a href="~/Posts/@Model.Url#Comments">@Model.Comments!.Count</a>
         
             <i class="fa fa-chart-line ml-md-4"></i>
             @Model.VisitsNumber<text> @Localizer["Visits"]</text>
@@ -36,7 +36,7 @@
                 {
                     counter++;
                     string split = counter < Model.TagAssignments.Count - 1 ? ", " : string.Empty;
-                    <a asp-controller="Blog" asp-action="Index" asp-route-tag="@tag">@tag</a>@split
+                    <a asp-controller="Posts" asp-action="Index" asp-route-tag="@tag">@tag</a>@split
 
                     split = "|";
                 }
@@ -44,8 +44,8 @@
          @if (User.IsInRole("Admin"))
          {
              <span class="float-lg-right d-print-none">
-                 <a href="~/Blog/@Model.Url/Edit"><i class="fas fa-edit"></i></a>
-                 <a href="~/Blog/@Model.Url/Edit">@Localizer["Edit"]</a>
+                 <a href="~/Posts/@Model.Url/Edit"><i class="fas fa-edit"></i></a>
+                 <a href="~/Posts/@Model.Url/Edit">@Localizer["Edit"]</a>
              </span>
          }
     </span>

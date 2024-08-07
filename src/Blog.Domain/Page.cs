@@ -1,4 +1,4 @@
-﻿namespace MyBlogOnCore.Domain
+﻿namespace Blog.Domain
 {
     public class Page : BaseEntity
     {

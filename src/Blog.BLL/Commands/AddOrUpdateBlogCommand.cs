@@ -1,16 +1,15 @@
 ﻿using MediatR;
-using MyBlogOnCore.Domain;
 
-namespace MyBlogOnCore.BLL.Commands
+namespace Blog.BLL.Commands
 {
     public class AddOrUpdateBlogCommand : IRequest
     {
-        public Blog Blog { get; set; }
+        public Domain.Post Post { get; set; }
         public IEnumerable<string> Tags { get; set; }
 
-        public AddOrUpdateBlogCommand(Blog blog, IEnumerable<string> tags)
+        public AddOrUpdateBlogCommand(Domain.Post post, IEnumerable<string> tags)
         {
-            Blog = blog;
+            Post = post;
             Tags = tags;
         }
     }

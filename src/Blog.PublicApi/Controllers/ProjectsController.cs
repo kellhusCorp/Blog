@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Blog.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyBlogOnCore.Domain;
 using MyBlogOnCore.Repository;
 
 namespace MyBlogOnCore.Controllers;

@@ -1,7 +1,7 @@
-﻿using MyBlogOnCore.BLL.Handlers;
-using MyBlogOnCore.BLL.Providers;
-using MyBlogOnCore.BLL.Repositories;
-using MyBlogOnCore.BLL.Services;
+﻿using Blog.BLL.Handlers;
+using Blog.BLL.Providers;
+using Blog.BLL.Repositories;
+using Blog.BLL.Services;
 
 namespace MyBlogOnCore.Extensions
 {

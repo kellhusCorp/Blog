@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using Blog.BLL.Commands;
+using Blog.BLL.Exceptions;
+using Blog.Infrastructure.Contexts;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL.Commands;
-using MyBlogOnCore.BLL.Exceptions;
-using MyBlogOnCore.DataSource.Contexts;
 
-namespace MyBlogOnCore.BLL.Handlers
+namespace Blog.BLL.Handlers
 {
     public class DeleteCommentHandler : IRequestHandler<DeleteCommentCommand>
     {

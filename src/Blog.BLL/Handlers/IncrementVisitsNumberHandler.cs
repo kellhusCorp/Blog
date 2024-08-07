@@ -1,10 +1,10 @@
-﻿using JetBrains.Annotations;
+﻿using Blog.BLL.Commands;
+using Blog.Infrastructure.Contexts;
+using JetBrains.Annotations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL.Commands;
-using MyBlogOnCore.DataSource.Contexts;
 
-namespace MyBlogOnCore.BLL.Handlers
+namespace Blog.BLL.Handlers
 {
     [UsedImplicitly]
     public class IncrementVisitsNumberHandler : IRequestHandler<IncrementVisitsNumberCommand>
@@ -19,7 +19,7 @@ namespace MyBlogOnCore.BLL.Handlers
         public async Task Handle(IncrementVisitsNumberCommand request, CancellationToken cancellationToken = default)
         {
             await _context.Database.ExecuteSqlInterpolatedAsync(
-                $"UPDATE \"Blogs\" SET \"VisitsNumber\" = \"VisitsNumber\" + 1 WHERE \"Id\" = {request.BlogId}", cancellationToken: cancellationToken);
+                $"UPDATE \"Posts\" SET \"VisitsNumber\" = \"VisitsNumber\" + 1 WHERE \"Id\" = {request.BlogId}", cancellationToken: cancellationToken);
         }
     }
 }

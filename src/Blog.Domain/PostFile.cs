@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MyBlogOnCore.Localization;
+using Blog.Localization;
 
-namespace MyBlogOnCore.Domain;
+namespace Blog.Domain;
 
-public class BlogFile : BaseEntity
+public class PostFile : BaseEntity
 {
-    public BlogFile(
+    public PostFile(
         string name)
     {
-        this.Name = name;
+        Name = name;
     }
 
     [Display(Name = nameof(Resources.Name), ResourceType = typeof(Resources))]
@@ -23,7 +23,7 @@ public class BlogFile : BaseEntity
     [Required(ErrorMessageResourceName = nameof(Resources.Validation_Required), ErrorMessageResourceType = typeof(Resources))]
     public Guid? BlogId { get; set; }
 
-    public virtual Blog? Blog { get; set; }
+    public virtual Post? Blog { get; set; }
 
     [NotMapped]
     public string Path

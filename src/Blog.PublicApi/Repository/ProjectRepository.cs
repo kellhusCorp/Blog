@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
+﻿using Blog.Domain;
+using Blog.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyBlogOnCore.Repository;
 

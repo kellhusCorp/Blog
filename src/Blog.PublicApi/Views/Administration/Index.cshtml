@@ -1,7 +1,6 @@
-﻿@using MyBlogOnCore.Domain
-@using MyBlogOnCore.Infrastructure.Paging
+﻿@using Blog.Domain
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model IndexViewModel
+@model Blog.PublicApi.Models.IndexViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Blog entries"];
@@ -18,12 +17,12 @@
         </div>
         <input asp-for="SearchTerm" class="form-control" placeholder="@Localizer["Search"]" />
     </div>
-    <input type="hidden" name="@nameof(Model.Blogs.Paging.Top)" value="@Model!.Blogs!.Paging.Top" />
+    <input type="hidden" name="@nameof(Model.Posts.Paging.Top)" value="@Model!.Posts!.Paging.Top" />
     <button type="submit" class="btn btn-primary btn-sm mb-2 mr-2">@Localizer["Filter"]</button>
     <button type="submit" name="Download" value="True" class="btn btn-success btn-sm mb-2"><i class="fa fa-file-excel" aria-hidden="true"></i> @Localizer["Download"]</button>
 </form>
 
-@if (Model.Blogs.TotalNumberOfItems > 0)
+@if (Model.Posts.TotalNumberOfItems > 0)
 {
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped table-sm">
@@ -36,15 +35,15 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th paged-result="Model.Blogs" sort-column="@nameof(Blog.Header)">@Html.DisplayNameFor(m => m.Blogs!.First().Header)</th>
-                    <th paged-result="Model.Blogs" sort-column="@nameof(Blog.PublishDate)">@Html.DisplayNameFor(m => m.Blogs!.First().PublishDate)</th>
-                    <th paged-result="Model.Blogs" sort-column="@nameof(Blog.UpdateDate)">@Html.DisplayNameFor(m => m.Blogs!.First().UpdateDate)</th>
-                    <th paged-result="Model.Blogs" sort-column="@nameof(Blog.VisitsNumber)" class="text-right">@Html.DisplayNameFor(m => m.Blogs!.First().VisitsNumber)</th>
+                    <th paged-result="Model.Blogs" sort-column="@nameof(Post.Header)">@Html.DisplayNameFor(m => m.Posts!.First().Header)</th>
+                    <th paged-result="Model.Blogs" sort-column="@nameof(Post.PublishDate)">@Html.DisplayNameFor(m => m.Posts!.First().PublishDate)</th>
+                    <th paged-result="Model.Blogs" sort-column="@nameof(Post.UpdateDate)">@Html.DisplayNameFor(m => m.Posts!.First().UpdateDate)</th>
+                    <th paged-result="Model.Blogs" sort-column="@nameof(Post.VisitsNumber)" class="text-right">@Html.DisplayNameFor(m => m.Posts!.First().VisitsNumber)</th>
                     <th class="d-print-none"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var blogEntry in Model.Blogs)
+                @foreach (var blogEntry in Model.Posts)
                 {
                     <tr>
                         <td><a href="~/blog/@blogEntry.Url/edit">@blogEntry.Header</a></td>
