@@ -148,7 +148,7 @@ namespace MyBlogOnCore.Controllers
 
             SetSuccessMessage(Resources.SavedSuccessfully);
 
-            return Redirect($"/blog/{model.Post.Url}/edit");
+            return RedirectToAction(nameof(EditBlog), new {year = model.Post.PublishDate.Year, month = model.Post.PublishDate.Month, day = model.Post.PublishDate.Day, id = model.Post.PermanentLink});
         }
 
         public async Task<IActionResult> Images(ImagesViewModel model, Paging<Image> paging)

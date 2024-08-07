@@ -3,7 +3,7 @@
 
 <header>
     <h3>
-        <a class="text-decoration-none" href="~/Blog/@Model?.Url">@Model?.Header</a>
+        <a class="text-decoration-none" asp-controller="Posts" asp-action="Entry" asp-route-year="@Model.PublishDate.Year" asp-route-month="@Model.PublishDate.Month" asp-route-day="@Model.PublishDate.Day" asp-route-id="@Model.PermanentLink">@Model.Header</a>
     </h3>
     
     <span class="text-muted">

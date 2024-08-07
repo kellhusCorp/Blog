@@ -10,8 +10,16 @@
 {
     <div class="row d-print-none">
         <div class="col-md-8 col-sm-12">
-            <a href="~/Blog/@Model.Post.Url" title="Edit" class="btn btn-outline-primary"><i class="fa fa-globe"></i> @Localizer["Show blog entry"]</a>
-            <br /><br />
+            <a class="btn btn-outline-primary"
+               title="Edit"
+               asp-controller="Posts"
+               asp-action="Entry"
+               asp-route-year="@Model.Post.PublishDate.Year"
+               asp-route-month="@Model.Post.PublishDate.Month"
+               asp-route-day="@Model.Post.PublishDate.Day" asp-route-id="@Model.Post.PermanentLink">
+                <i class="fa fa-globe"></i> @Localizer["Show blog entry"]
+            </a>
+            <br />
         </div>
     </div>
 }
@@ -84,7 +92,7 @@
     <div class="col-lg-4 col-sm-12">
         @if (existingEntry)
         {
-            var blogEntryFileViewModel = new AddBlogFileViewModel()
+            var blogEntryFileViewModel = new AddBlogFileViewModel
             {
                 BlogId = Model.Post.Id
             };
