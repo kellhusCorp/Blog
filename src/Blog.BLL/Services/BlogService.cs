@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using Blog.BLL.Exceptions;
+using Blog.Domain;
+using Blog.Infrastructure.Contexts;
+using Blog.Localization;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL.Exceptions;
-using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
-using MyBlogOnCore.Localization;
 
-namespace MyBlogOnCore.BLL.Services;
+namespace Blog.BLL.Services;
 
-public class BlogService : IBlogService<Blog>
+public class BlogService : IBlogService<Domain.Post>
 {
     private readonly BlogDbContext context;
 
@@ -17,9 +17,9 @@ public class BlogService : IBlogService<Blog>
         this.context = context;
     }
 
-    public async Task AddOrUpdate(Blog entity, IEnumerable<string> tags)
+    public async Task AddOrUpdate(Domain.Post entity, IEnumerable<string> tags)
     {
-        var blogEntryWithSamePermalink = context.Blogs
+        var blogEntryWithSamePermalink = context.Posts
             .Any(b => b.Id != entity.Id && b.PermanentLink == entity.PermanentLink);
 
         if (blogEntryWithSamePermalink)
@@ -27,7 +27,7 @@ public class BlogService : IBlogService<Blog>
             throw new BusinessException(string.Format(Resources.PermanentLinkInUse, entity.PermanentLink));
         }
 
-        var blogEntry = context.Blogs
+        var blogEntry = context.Posts
             .Include(b => b.TagAssignments!)
             .ThenInclude(b => b.Tag)
             .SingleOrDefault(b => b.Id == entity.Id);
@@ -42,7 +42,7 @@ public class BlogService : IBlogService<Blog>
 
             blogEntry.UpdateDate = blogEntry.CreatedOn;
 
-            context.Blogs.Add(blogEntry);
+            context.Posts.Add(blogEntry);
         }
         else
         {
@@ -68,7 +68,7 @@ public class BlogService : IBlogService<Blog>
             $"UPDATE \"Blogs\" SET \"VisitsNumber\" = \"VisitsNumber\" + 1 WHERE \"Id\" = {id}");
     }
 
-    private async Task AddTagsAsync(Blog entry, IEnumerable<string> tags)
+    private async Task AddTagsAsync(Domain.Post entry, IEnumerable<string> tags)
     {
         var existingTags = await context.Tags.ToListAsync();
 

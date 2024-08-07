@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using Blog.BLL.Settings;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using MyBlogOnCore.BLL.Settings;
 
 namespace MyBlogOnCore.Extensions
 {

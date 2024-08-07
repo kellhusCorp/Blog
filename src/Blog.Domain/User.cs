@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Blog.Localization;
 using Microsoft.AspNetCore.Identity;
-using MyBlogOnCore.Localization;
 
-namespace MyBlogOnCore.Domain;
+namespace Blog.Domain;
 
 public class User : IdentityUser
 {
@@ -16,7 +16,7 @@ public class User : IdentityUser
     [Display(Name = nameof(Resources.LastName), ResourceType = typeof(Resources))]
     public string LastName { get; set; }
 
-    public virtual ICollection<Blog>? Blogs { get; set; }
+    public ICollection<Post>? Posts { get; set; }
 
     public override string ToString()
     {

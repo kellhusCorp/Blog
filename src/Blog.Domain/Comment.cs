@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MyBlogOnCore.Localization;
+using Blog.Localization;
 
-namespace MyBlogOnCore.Domain;
+namespace Blog.Domain;
 
 public class Comment : BaseEntity
 {
@@ -33,5 +33,5 @@ public class Comment : BaseEntity
     [Required(ErrorMessageResourceName = nameof(Resources.Validation_Required), ErrorMessageResourceType = typeof(Resources))]
     public Guid? BlogId { get; set; }
 
-    public virtual Blog? Blog { get; set; }
+    public virtual Post? Blog { get; set; }
 }

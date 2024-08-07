@@ -1,16 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MyBlogOnCore.Localization;
+using Blog.Localization;
 
-namespace MyBlogOnCore.Domain;
+namespace Blog.Domain;
 
-public class Blog : BaseEntity
+public sealed class Post : BaseEntity
 {
-    public Blog()
+    public Post()
     {
     }
 
-    public Blog(
+    public Post(
         string header,
         string permanentLink,
         string shortContent)
@@ -44,11 +44,11 @@ public class Blog : BaseEntity
     
     public User? Author { get; set; }
     
-    public virtual ICollection<TagAssignment>? TagAssignments { get; set; }
+    public ICollection<TagAssignment>? TagAssignments { get; set; }
     
-    public virtual ICollection<Comment>? Comments { get; set; }
+    public ICollection<Comment>? Comments { get; set; }
     
-    public virtual ICollection<BlogFile>? Files { get; set; }
+    public ICollection<PostFile>? Files { get; set; }
     
     [NotMapped]
     public string Url => $"{PublishDate.Year}/{PublishDate.Month}/{PublishDate.Day}/{PermanentLink}";

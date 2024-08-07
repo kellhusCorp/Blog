@@ -1,4 +1,4 @@
-﻿namespace MyBlogOnCore.BLL.Handlers;
+﻿namespace Blog.BLL.Handlers;
 
 public interface ICommandHandler<T>
 {

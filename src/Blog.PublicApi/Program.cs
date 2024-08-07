@@ -1,12 +1,9 @@
 using System.Globalization;
+using Blog.BLL.Handlers;
+using Blog.BLL.Settings;
+using Blog.Infrastructure.Contexts;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
-using MyBlogOnCore.BLL;
-using MyBlogOnCore.BLL.Handlers;
-using MyBlogOnCore.BLL.Settings;
-using MyBlogOnCore.DataSource.Contexts;
 using MyBlogOnCore.Extensions;
 using MyBlogOnCore.Middlewares;
 using MyBlogOnCore.Options;
@@ -14,11 +11,11 @@ using MyBlogOnCore.Profiles;
 using NLog;
 using NLog.Web;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Host.ConfigureLogging(logging =>
     {
@@ -53,7 +50,7 @@ builder.Services.AddAutoMapper(expression =>
 
 builder.Services.AddLegacyHandlers();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.ConfigureStaticFiles();
 
@@ -68,11 +65,13 @@ app.CreateAdminUser(new AdminUserOptions
     LastName = "Admin",
     IsConfirmed = true,
     Password = app.Configuration.GetSection("Credentials")["AdminPassword"],
-    RoleNames = new []{ "Admin" }
+    RoleNames = new[] { "Admin" }
 });
 
 if (app.Environment.IsDevelopment())
+{
     app.UseMigrationsEndPoint();
+}
 else
 {
     app.UseExceptionHandler("/Home/Error");
@@ -87,11 +86,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-var supportedCultures = new[]
-{
-    new CultureInfo("ru"),
-    new CultureInfo("en")
-};
+CultureInfo[] supportedCultures = new[] { new CultureInfo("ru"), new CultureInfo("en") };
 
 app.UseRequestLocalization(new RequestLocalizationOptions
 {

@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using Blog.BLL.Dtos;
+using Blog.BLL.Queries;
+using Blog.Domain;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyBlogOnCore.BLL.Dtos;
-using MyBlogOnCore.BLL.Queries;
-using PetBlog.Infrastructure.Types;
 
 namespace MyBlogOnCore.Controllers
 {
@@ -26,9 +26,9 @@ namespace MyBlogOnCore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetPages()
         {
-            OperationResult<IEnumerable<PageMetadataDto>> result = await _mediator.Send(new GetPagesMetadataQuery());
+            Result<IEnumerable<PageMetadataDto>> result = await _mediator.Send(new GetPagesMetadataQuery());
             
-            if (!result.Succeeded)
+            if (!result.IsSuccessful)
             {
                 return NotFound();
             }

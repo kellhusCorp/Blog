@@ -1,4 +1,4 @@
-﻿using MyBlogOnCore.Domain;
+﻿using Blog.Domain;
 using MyBlogOnCore.Models;
 
 namespace MyBlogOnCore.Repository;

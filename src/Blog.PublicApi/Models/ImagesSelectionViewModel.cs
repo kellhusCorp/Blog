@@ -1,5 +1,5 @@
 ﻿
-using MyBlogOnCore.Domain;
+using Blog.Domain;
 
 namespace MyBlogOnCore.Models;
 

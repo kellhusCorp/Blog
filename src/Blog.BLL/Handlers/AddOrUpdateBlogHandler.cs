@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using Blog.BLL.Commands;
+using Blog.BLL.Exceptions;
+using Blog.Domain;
+using Blog.Infrastructure.Contexts;
+using Blog.Localization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL.Commands;
-using MyBlogOnCore.BLL.Exceptions;
-using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
-using MyBlogOnCore.Localization;
 
-namespace MyBlogOnCore.BLL.Handlers
+namespace Blog.BLL.Handlers
 {
     public class AddOrUpdateBlogHandler : IRequestHandler<AddOrUpdateBlogCommand>
     {
@@ -21,22 +21,22 @@ namespace MyBlogOnCore.BLL.Handlers
 
         public async Task Handle(AddOrUpdateBlogCommand request, CancellationToken cancellationToken = default)
         {
-            var blogEntryWithSamePermalink = _context.Blogs
-                .Any(b => b.Id != request.Blog.Id && b.PermanentLink == request.Blog.PermanentLink);
+            var blogEntryWithSamePermalink = _context.Posts
+                .Any(b => b.Id != request.Post.Id && b.PermanentLink == request.Post.PermanentLink);
 
             if (blogEntryWithSamePermalink)
             {
-                throw new BusinessException(string.Format(Resources.PermanentLinkInUse, request.Blog.PermanentLink));
+                throw new BusinessException(string.Format(Resources.PermanentLinkInUse, request.Post.PermanentLink));
             }
 
-            var blog = _context.Blogs
+            var blog = _context.Posts
                 .Include(b => b.TagAssignments!)
                 .ThenInclude(b => b.Tag)
-                .SingleOrDefault(b => b.Id == request.Blog.Id);
+                .SingleOrDefault(b => b.Id == request.Post.Id);
 
             if (blog == null)
             {
-                blog = request.Blog;
+                blog = request.Post;
                 blog.PermanentLink = Regex.Replace(
                     blog.Header.ToLowerInvariant().Replace(" - ", "-").Replace(" ", "-"),
                     "[^\\w^-]",
@@ -44,18 +44,18 @@ namespace MyBlogOnCore.BLL.Handlers
 
                 blog.UpdateDate = blog.CreatedOn;
 
-                _context.Blogs.Add(blog);
+                _context.Posts.Add(blog);
             }
             else
             {
                 blog.UpdateDate = DateTimeOffset.UtcNow;
-                blog.Header = request.Blog.Header;
-                blog.PermanentLink = request.Blog.PermanentLink;
-                blog.ShortContent = request.Blog.ShortContent;
-                blog.Body = request.Blog.Body;
-                blog.AuthorId = request.Blog.AuthorId;
-                blog.PublishDate = request.Blog.PublishDate;
-                blog.IsVisible = request.Blog.IsVisible;
+                blog.Header = request.Post.Header;
+                blog.PermanentLink = request.Post.PermanentLink;
+                blog.ShortContent = request.Post.ShortContent;
+                blog.Body = request.Post.Body;
+                blog.AuthorId = request.Post.AuthorId;
+                blog.PublishDate = request.Post.PublishDate;
+                blog.IsVisible = request.Post.IsVisible;
             }
 
             await AddTagsAsync(blog, request.Tags);
@@ -63,21 +63,21 @@ namespace MyBlogOnCore.BLL.Handlers
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task AddTagsAsync(Blog blog, IEnumerable<string> tags)
+        private async Task AddTagsAsync(Domain.Post post, IEnumerable<string> tags)
         {
             var existingTags = await _context.Tags.ToListAsync();
 
-            if (blog.TagAssignments == null)
+            if (post.TagAssignments == null)
             {
-                blog.TagAssignments = new Collection<TagAssignment>();
+                post.TagAssignments = new Collection<TagAssignment>();
             }
 
-            foreach (var tag in blog.TagAssignments.Where(t => !tags.Contains(t.Tag!.Name)).ToArray())
+            foreach (var tag in post.TagAssignments.Where(t => !tags.Contains(t.Tag!.Name)).ToArray())
             {
-                blog.TagAssignments.Remove(tag);
+                post.TagAssignments.Remove(tag);
             }
 
-            foreach (var tag in tags.Where(t => !blog.TagAssignments.Select(et => et.Tag!.Name).Contains(t)).ToArray())
+            foreach (var tag in tags.Where(t => !post.TagAssignments.Select(et => et.Tag!.Name).Contains(t)).ToArray())
             {
                 var existingTag = existingTags.SingleOrDefault(t => t.Name.Equals(tag, StringComparison.OrdinalIgnoreCase));
 
@@ -88,9 +88,9 @@ namespace MyBlogOnCore.BLL.Handlers
                     _context.Tags.Add(existingTag);
                 }
 
-                blog.TagAssignments.Add(new TagAssignment
+                post.TagAssignments.Add(new TagAssignment
                 {
-                    BlogId = blog.Id,
+                    BlogId = post.Id,
                     TagId = existingTag.Id
                 });
             }

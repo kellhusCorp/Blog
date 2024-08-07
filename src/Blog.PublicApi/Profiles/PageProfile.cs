@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Blog.BLL.Dtos;
+using Blog.Domain;
 
 namespace MyBlogOnCore.Profiles
 {
@@ -6,7 +8,7 @@ namespace MyBlogOnCore.Profiles
     {
         public PageProfile()
         {
-            CreateMap<Domain.Page, BLL.Dtos.PageDto>()
+            CreateMap<Page, PageDto>()
                 .ReverseMap();
         }
     }

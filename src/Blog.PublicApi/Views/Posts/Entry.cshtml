@@ -1,4 +1,4 @@
-﻿@model BlogViewModel
+﻿@model Blog.PublicApi.Models.BlogViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
     ViewData["Title"] = Model!.BlogEntry.Header;
@@ -128,8 +128,8 @@
                                 <br class="d-md-none"/>
                         
                                 <span class="float-lg-right d-print-none">
-                                    <a asp-controller="Blog" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-back="@(Url.Action("Entry", "Blog", new { Model.BlogEntry.PermanentLink }))#comments" class="text-danger confirmdelete" data-confirmmessage="@Localizer["Really delete comment?"]"><i class="fas fa-trash"></i></a>
-                                    <a asp-controller="Blog" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-back="@Url.Action("Entry", "Blog", new { Model.BlogEntry.PermanentLink })#comments" class="text-danger confirmdelete" data-confirmmessage="@Localizer["Really delete comment?"]">@Localizer["Delete"]</a>
+                                    <a asp-controller="Posts" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-back="@(Url.Action("Entry", "Posts", new { Model.BlogEntry.PermanentLink }))#comments" class="text-danger confirmdelete" data-confirmmessage="@Localizer["Really delete comment?"]"><i class="fas fa-trash"></i></a>
+                                    <a asp-controller="Posts" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-back="@Url.Action("Entry", "Posts", new { Model.BlogEntry.PermanentLink })#comments" class="text-danger confirmdelete" data-confirmmessage="@Localizer["Really delete comment?"]">@Localizer["Delete"]</a>
                                 </span>
                             }
                         </span>

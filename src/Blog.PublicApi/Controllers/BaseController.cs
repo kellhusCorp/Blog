@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Blog.Domain;
+using Blog.Infrastructure.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
 
-namespace MyBlogOnCore.Controllers;
+namespace Blog.PublicApi.Controllers;
 
 public class BaseController : Controller
 {
@@ -35,9 +35,9 @@ public class BaseController : Controller
         TempData[ErrorMessage] = message;
     }
 
-    protected virtual async Task<Blog?> GetByPermanentLink(string header)
+    protected virtual async Task<Post?> GetByPermanentLink(string header)
     {
-        var entry = await context.Blogs
+        var entry = await context.Posts
             .Include(x => x.Author)
             .Include(b => b.TagAssignments!)
             .ThenInclude(b => b.Tag)

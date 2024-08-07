@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MyBlogOnCore.Localization;
+using Blog.Localization;
 
-namespace MyBlogOnCore.Domain;
+namespace Blog.Domain;
 
 public class Image : BaseEntity
 {

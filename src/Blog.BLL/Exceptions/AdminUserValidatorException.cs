@@ -1,4 +1,4 @@
-﻿namespace MyBlogOnCore.BLL.Exceptions;
+﻿namespace Blog.BLL.Exceptions;
 
 public class AdminUserValidatorException : Exception
 {

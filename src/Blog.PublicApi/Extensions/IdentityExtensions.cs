@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
+﻿using Blog.Domain;
+using Blog.Infrastructure.Contexts;
+using Microsoft.AspNetCore.Identity;
 
 namespace MyBlogOnCore.Extensions
 {

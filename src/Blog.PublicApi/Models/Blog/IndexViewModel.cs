@@ -1,27 +1,28 @@
-﻿using MyBlogOnCore.Domain;
+﻿using Blog.Domain;
 using MyBlogOnCore.Infrastructure.Paging;
 
-namespace MyBlogOnCore.Models;
-
-public class BlogsIndexViewModel
+namespace Blog.PublicApi.Models
 {
-    public BlogsIndexViewModel(
-        PagedResult<Blog> entries,
-        List<Tag> tags,
-        List<Domain.Blog> popularBlogEntries)
+    public class PostsIndexViewModel
     {
-        this.Entries = entries;
-        this.Tags = tags;
-        this.PopularBlogEntries = popularBlogEntries;
+        public PostsIndexViewModel(
+            PagedResult<Post> entries,
+            List<Tag> tags,
+            List<Post> popularPosts)
+        {
+            Entries = entries;
+            Tags = tags;
+            PopularPosts = popularPosts;
+        }
+
+        public PagedResult<Post> Entries { get; set; }
+
+        public List<Tag> Tags { get; set; }
+
+        public List<Post> PopularPosts { get; set; }
+
+        public string? Search { get; set; }
+
+        public string? Tag { get; set; }
     }
-
-    public PagedResult<Blog> Entries { get; set; }
-
-    public List<Tag> Tags { get; set; }
-
-    public List<Blog> PopularBlogEntries { get; set; }
-
-    public string? Search { get; set; }
-
-    public string? Tag { get; set; }
 }

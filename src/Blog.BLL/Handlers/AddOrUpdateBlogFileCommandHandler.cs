@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL.Commands;
-using MyBlogOnCore.BLL.Providers;
-using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
+﻿using Blog.BLL.Commands;
+using Blog.BLL.Providers;
+using Blog.Domain;
+using Blog.Infrastructure.Contexts;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
-namespace MyBlogOnCore.BLL.Handlers;
+namespace Blog.BLL.Handlers;
 
+[UsedImplicitly]
 public class AddOrUpdateBlogFileCommandHandler : ICommandHandler<AddOrUpdateBlogFileCommand>
 {
     private readonly BlogDbContext context;
@@ -26,18 +28,18 @@ public class AddOrUpdateBlogFileCommandHandler : ICommandHandler<AddOrUpdateBlog
 
         var extension = fileName.Substring(fileName.LastIndexOf('.') + 1);
         
-        BlogFile? blogFile = await context.Files
+        PostFile? blogFile = await context.PostFiles
             .SingleOrDefaultAsync(f => f.BlogId == command.BlogId && f.Name == fileName);
         
         if (blogFile == null)
         {
-            blogFile = new BlogFile(fileName)
+            blogFile = new PostFile(fileName)
             {
                 BlogId = command.BlogId,
                 Name = fileName
             };
 
-            await context.Files.AddAsync(blogFile);
+            await context.PostFiles.AddAsync(blogFile);
         }
         
         await fileProvider.AddFileAsync($"{blogFile.Id}.{extension}", command.Data);

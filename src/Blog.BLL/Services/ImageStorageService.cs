@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL.Providers;
-using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
+﻿using Blog.BLL.Providers;
+using Blog.Domain;
+using Blog.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
-namespace MyBlogOnCore.BLL.Services;
+namespace Blog.BLL.Services;
 
 public class ImageStorageService : IImageStorageService
 {

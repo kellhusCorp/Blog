@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace MyBlogOnCore.DataSource.Contexts;
+namespace Blog.Infrastructure.Contexts;
 
 public interface IMigratoryContext
 {

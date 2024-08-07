@@ -1,4 +1,4 @@
-﻿using MyBlogOnCore.Domain;
+﻿using Blog.Domain;
 using MyBlogOnCore.Infrastructure.Paging;
 
 namespace MyBlogOnCore.Models;

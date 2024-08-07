@@ -3,10 +3,10 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using Blog.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
-using MyBlogOnCore.Domain;
 
 namespace MyBlogOnCore.Areas.Identity.Pages.Account
 {

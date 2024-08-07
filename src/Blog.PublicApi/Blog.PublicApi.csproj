@@ -36,7 +36,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Blog.BLL\Blog.BLL.csproj" />
-      <ProjectReference Include="..\Blog.DataSource\Blog.DataSource.csproj" />
+      <ProjectReference Include="..\Blog.Infrastructure\Blog.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

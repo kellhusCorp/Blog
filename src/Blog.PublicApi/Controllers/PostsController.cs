@@ -1,20 +1,18 @@
-﻿using MediatR;
+﻿using Blog.BLL.Commands;
+using Blog.BLL.Handlers;
+using Blog.BLL.Providers;
+using Blog.Domain;
+using Blog.Infrastructure.Contexts;
+using Blog.PublicApi.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.BLL;
-using MyBlogOnCore.BLL.Commands;
-using MyBlogOnCore.BLL.Handlers;
-using MyBlogOnCore.BLL.Providers;
-using MyBlogOnCore.BLL.Services;
-using MyBlogOnCore.DataSource.Contexts;
-using MyBlogOnCore.Domain;
 using MyBlogOnCore.Infrastructure.Paging;
-using MyBlogOnCore.Models;
 
-namespace MyBlogOnCore.Controllers;
+namespace Blog.PublicApi.Controllers;
 
-public class BlogController : BaseController
+public class PostsController : BaseController
 {
     private const int EntriesPerPage = 10;
     
@@ -24,7 +22,7 @@ public class BlogController : BaseController
     private readonly IBlogFileProvider blogFileProvider;
     private readonly IMediator _mediator;
 
-    public BlogController(
+    public PostsController(
         BlogDbContext context,
         ICommandHandler<AddCommentCommand> addCommentHandler, 
         ICommandHandler<IncrementBlogFileCounterCommand> incrementBlogFileCounterCommandHandler,
@@ -57,13 +55,13 @@ public class BlogController : BaseController
     [Route("[controller]")]
     [Route("[controller]/Index")]
     [Route("[controller]/Tag/{tag}")]
-    public async Task<ActionResult> Index(Paging<Blog> paging, string? tag, string? search)
+    public async Task<ActionResult> Index(Paging<Post> paging, string? tag, string? search)
     {
         paging.SetSortExpression(p => p.PublishDate);
         paging.SortDirection = SortDirection.Descending;
         paging.Top = EntriesPerPage;
 
-        var query = context.Blogs
+        var query = context.Posts
                         .Include(b => b.Author)
                         .Include(b => b.TagAssignments!)
                         .ThenInclude(b => b.Tag)
@@ -89,7 +87,7 @@ public class BlogController : BaseController
             .AsNoTracking()
             .OrderBy(t => t.Name)
             .ToListAsync();
-        var popularBlogEntries = await context.Blogs
+        var popularBlogEntries = await context.Posts
             .AsNoTracking()
             .Where(e => (e.IsVisible && e.PublishDate <= DateTimeOffset.Now)
                 || (this.User.Identity != null && this.User.Identity.IsAuthenticated))
@@ -97,7 +95,7 @@ public class BlogController : BaseController
             .Take(5)
             .ToListAsync();
 
-        var model = new BlogsIndexViewModel(entries, tags, popularBlogEntries)
+        var model = new PostsIndexViewModel(entries, tags, popularBlogEntries)
         {
             Tag = tag,
             Search = search
@@ -124,23 +122,23 @@ public class BlogController : BaseController
     [Route("[controller]/{year:int}/{month:int}/{day:int}/{id}")]
     public async Task<IActionResult> Entry(string id)
     {
-        var blog = await GetByPermanentLink(id);
+        var post = await GetByPermanentLink(id);
 
-        if (blog == null)
+        if (post == null)
         {
             return NotFound();
         }
 
         if (User.Identity == null || !User.Identity.IsAuthenticated)
         {
-            await _mediator.Send(new IncrementVisitsNumberCommand(blog.Id));
-            blog.VisitsNumber++;
+            await _mediator.Send(new IncrementVisitsNumberCommand(post.Id));
+            post.VisitsNumber++;
         }
 
         return View(new BlogViewModel
         {
-            BlogEntry = blog,
-            RelatedBlogEntries = await GetRelatedBlogEntries(blog)
+            BlogEntry = post,
+            RelatedBlogEntries = await GetRelatedPosts(post)
         });
     }
 
@@ -162,7 +160,7 @@ public class BlogController : BaseController
         if (!ModelState.IsValid)
         {
             model.BlogEntry = entry;
-            model.RelatedBlogEntries = await GetRelatedBlogEntries(entry);
+            model.RelatedBlogEntries = await GetRelatedPosts(entry);
         }
         
         var comment = new Comment(model.Comment.Name, model.Comment.Comment)
@@ -189,7 +187,7 @@ public class BlogController : BaseController
             return NotFound();
         }
         
-        var blogFile = await context.Files
+        var blogFile = await context.PostFiles
             .AsNoTracking()
             .SingleOrDefaultAsync(b => b.Id == id);
 
@@ -198,7 +196,7 @@ public class BlogController : BaseController
             return NotFound();
         }
         
-        if (User.Identity == null || !User.Identity.IsAuthenticated)
+        if (User.Identity is not { IsAuthenticated: true })
         {
             await incrementBlogFileCounterCommandHandler.ExecuteAsync(new IncrementBlogFileCounterCommand(blogFile.Id));
         }
@@ -213,7 +211,7 @@ public class BlogController : BaseController
         return file;
     }
     
-    protected sealed override async Task<Blog?> GetByPermanentLink(string header)
+    protected sealed override async Task<Post?> GetByPermanentLink(string header)
     {
         var entry =  await base.GetByPermanentLink(header);
         if (entry != null)
@@ -228,13 +226,13 @@ public class BlogController : BaseController
         return entry;
     }
     
-    private async Task<List<Blog>> GetRelatedBlogEntries(Blog entry)
+    private async Task<List<Post>> GetRelatedPosts(Post post)
     {
-        var tagIds = entry.TagAssignments!.Select(t => t.TagId).ToList();
+        var tagIds = post.TagAssignments!.Select(t => t.TagId).ToList();
 
-        var query = await context.Blogs
+        var query = await context.Posts
             .AsNoTracking()
-            .Where(e => e.IsVisible && e.PublishDate <= DateTimeOffset.UtcNow && e.Id != entry.Id)
+            .Where(e => e.IsVisible && e.PublishDate <= DateTimeOffset.UtcNow && e.Id != post.Id)
             .Where(e => e.TagAssignments!.Any(t => tagIds.Contains(t.TagId)))
             .OrderByDescending(e => e.TagAssignments!.Count(t => tagIds.Contains(t.TagId)))
             .ThenByDescending(e => e.CreatedOn)

@@ -1,19 +1,19 @@
-﻿using MyBlogOnCore.Domain;
+﻿using Blog.Domain;
 
-namespace MyBlogOnCore.Models;
+namespace Blog.PublicApi.Models;
 
-public class EditBlogViewModel
+public class EditPostViewModel
 {
-    public EditBlogViewModel()
+    public EditPostViewModel()
     {
     }
     
-    public EditBlogViewModel(Blog blog)
+    public EditPostViewModel(Post post)
     {
-        Blog = blog;
+        Post = post;
     }
 
-    public Blog Blog { get; set; }
+    public Post Post { get; set; }
 
     public List<string> SelectedTagNames { get; set; } = new List<string>();
 

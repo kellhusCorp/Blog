@@ -1,6 +1,6 @@
-﻿using MyBlogOnCore.Domain;
+﻿using Blog.Domain;
 
-namespace MyBlogOnCore.BLL.Repositories
+namespace Blog.BLL.Repositories
 {
     public interface IPagesRepository
     {

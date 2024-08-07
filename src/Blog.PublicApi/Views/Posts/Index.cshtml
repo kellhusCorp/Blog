@@ -1,4 +1,4 @@
-﻿@model BlogsIndexViewModel
+﻿@model Blog.PublicApi.Models.PostsIndexViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
@@ -68,7 +68,7 @@
                         @foreach (var tag in Model.Tags)
                         {
                             <i class="fas fa-tag"></i>
-                            <a asp-controller="Blog" asp-action="Index" asp-route-tag="@tag.Name" class="text-nowrap">
+                            <a asp-controller="Posts" asp-action="Index" asp-route-tag="@tag.Name" class="text-nowrap">
                                 @tag.Name
                             </a>
                         }
@@ -76,12 +76,12 @@
                 </div>
                 
                 <div class="col-lg-12 col-md-6 col-sm-6 col-6 mb-3">
-                    @if (Model.PopularBlogEntries.Count > 0)
+                    @if (Model.PopularPosts.Count > 0)
                     {
                         <h3>@Localizer["Popular posts"]</h3>
-                        @foreach (var entry in Model.PopularBlogEntries)
+                        @foreach (var entry in Model.PopularPosts)
                         {
-                            <a href="~/Blog/@entry.Url">@entry.Header</a>
+                            @Html.RouteLink(entry.Header, new {controller = "Posts", action="Entry", year = entry.PublishDate.Year, month = entry.PublishDate.Month, day = entry.PublishDate.Day, id = entry.PermanentLink})
                             <br/>
                         }
                     }

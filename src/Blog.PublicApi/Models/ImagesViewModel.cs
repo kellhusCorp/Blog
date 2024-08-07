@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MyBlogOnCore.Domain;
+using Blog.Domain;
+using Blog.Localization;
 using MyBlogOnCore.Infrastructure.Paging;
-using MyBlogOnCore.Localization;
 
 namespace MyBlogOnCore.Models;
 
