@@ -1,18 +1,17 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["MyBlogOnCore/MyBlogOnCore.csproj", "MyBlogOnCore/"]
-RUN dotnet restore "MyBlogOnCore/MyBlogOnCore.csproj"
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+COPY ["Blog.PublicApi/Blog.PublicApi.csproj", "Blog.PublicApi/"]
+RUN dotnet restore "Blog.PublicApi/Blog.PublicApi.csproj"
 COPY . .
-WORKDIR "/src/MyBlogOnCore"
-RUN dotnet build "MyBlogOnCore.csproj" -c Release -o /app/build
+WORKDIR "Blog.PublicApi"
+RUN dotnet build "Blog.PublicApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MyBlogOnCore.csproj" -c Release -o /app/publish
+RUN dotnet publish "Blog.PublicApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MyBlogOnCore.dll"]
+ENTRYPOINT ["dotnet", "Blog.PublicApi.dll"]

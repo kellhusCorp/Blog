@@ -160,7 +160,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Blog", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Blog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -209,7 +209,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.BlogFile", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.BlogFile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -237,7 +237,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.ToTable("Files");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Comment", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -277,7 +277,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Image", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Image", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -296,7 +296,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Project", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Project", b =>
                 {
                     b.Property<int>("ProjectId")
                         .ValueGeneratedOnAdd()
@@ -327,7 +327,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Tag", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Tag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -349,7 +349,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.TagAssignment", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.TagAssignment", b =>
                 {
                     b.Property<Guid?>("BlogId")
                         .HasColumnType("uuid");
@@ -364,7 +364,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.ToTable("TagAssignments");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.User", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -447,7 +447,7 @@ namespace MyBlogOnCore.DataSource.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MyBlogOnCore.Domain.User", null)
+                    b.HasOne("Blog.PublicApi.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -456,7 +456,7 @@ namespace MyBlogOnCore.DataSource.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MyBlogOnCore.Domain.User", null)
+                    b.HasOne("Blog.PublicApi.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -471,7 +471,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyBlogOnCore.Domain.User", null)
+                    b.HasOne("Blog.PublicApi.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -480,16 +480,16 @@ namespace MyBlogOnCore.DataSource.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MyBlogOnCore.Domain.User", null)
+                    b.HasOne("Blog.PublicApi.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Blog", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Blog", b =>
                 {
-                    b.HasOne("MyBlogOnCore.Domain.User", "Author")
+                    b.HasOne("Blog.PublicApi.Domain.User", "Author")
                         .WithMany("Blogs")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -497,9 +497,9 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.BlogFile", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.BlogFile", b =>
                 {
-                    b.HasOne("MyBlogOnCore.Domain.Blog", "Blog")
+                    b.HasOne("Blog.PublicApi.Domain.Blog", "Blog")
                         .WithMany("Files")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -508,9 +508,9 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.Navigation("Blog");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Comment", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Comment", b =>
                 {
-                    b.HasOne("MyBlogOnCore.Domain.Blog", "Blog")
+                    b.HasOne("Blog.PublicApi.Domain.Blog", "Blog")
                         .WithMany("Comments")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -519,15 +519,15 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.Navigation("Blog");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.TagAssignment", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.TagAssignment", b =>
                 {
-                    b.HasOne("MyBlogOnCore.Domain.Blog", "Blog")
+                    b.HasOne("Blog.PublicApi.Domain.Blog", "Blog")
                         .WithMany("TagAssignments")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyBlogOnCore.Domain.Tag", "Tag")
+                    b.HasOne("Blog.PublicApi.Domain.Tag", "Tag")
                         .WithMany("TagAssignments")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -538,7 +538,7 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Blog", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Blog", b =>
                 {
                     b.Navigation("Comments");
 
@@ -547,12 +547,12 @@ namespace MyBlogOnCore.DataSource.Migrations
                     b.Navigation("TagAssignments");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.Tag", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.Tag", b =>
                 {
                     b.Navigation("TagAssignments");
                 });
 
-            modelBuilder.Entity("MyBlogOnCore.Domain.User", b =>
+            modelBuilder.Entity("Blog.PublicApi.Domain.User", b =>
                 {
                     b.Navigation("Blogs");
                 });

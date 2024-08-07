@@ -6,6 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-MyBlogOnCore-AFCAA338-5CED-46A2-80D9-89EA0F8D9D36</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <AssemblyName>Blog.PublicApi</AssemblyName>
+        <RootNamespace>Blog.PublicApi</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,8 +35,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MyBlogOnCore.BLL\MyBlogOnCore.BLL.csproj" />
-      <ProjectReference Include="..\MyBlogOnCore.DataSource\MyBlogOnCore.DataSource.csproj" />
+      <ProjectReference Include="..\Blog.BLL\Blog.BLL.csproj" />
+      <ProjectReference Include="..\Blog.DataSource\Blog.DataSource.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -4,12 +4,14 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AssemblyName>Blog.BLL</AssemblyName>
+        <RootNamespace>Blog.BLL</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PetBlog.Infrastructure\PetBlog.Infrastructure.csproj" />
-      <ProjectReference Include="..\MyBlogOnCore.DataSource\MyBlogOnCore.DataSource.csproj" />
-      <ProjectReference Include="..\MyBlogOnCore.Domain\MyBlogOnCore.Domain.csproj" />
+      <ProjectReference Include="..\Blog.Infrastructure\Blog.Infrastructure.csproj" />
+      <ProjectReference Include="..\Blog.DataSource\Blog.DataSource.csproj" />
+      <ProjectReference Include="..\Blog.Domain\Blog.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

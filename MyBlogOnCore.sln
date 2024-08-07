@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlogOnCore", "src\MyBlogOnCore\MyBlogOnCore.csproj", "{3ACAC38A-EAA4-494B-92A1-831DEC07DCF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.PublicApi", "src\Blog.PublicApi\Blog.PublicApi.csproj", "{3ACAC38A-EAA4-494B-92A1-831DEC07DCF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlogOnCore.Domain", "src\MyBlogOnCore.Domain\MyBlogOnCore.Domain.csproj", "{6AFC1B54-F95F-4831-8E5B-D2EE207E4FAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Domain", "src\Blog.Domain\Blog.Domain.csproj", "{6AFC1B54-F95F-4831-8E5B-D2EE207E4FAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlogOnCore.Localization", "src\MyBlogOnCore.Localization\MyBlogOnCore.Localization.csproj", "{8CEA856C-7E2F-4047-9DF4-75B018DFE499}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Localization", "src\Blog.Localization\Blog.Localization.csproj", "{8CEA856C-7E2F-4047-9DF4-75B018DFE499}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlogOnCore.DataSource", "src\MyBlogOnCore.DataSource\MyBlogOnCore.DataSource.csproj", "{29A57EC9-7782-440B-BA35-16036C396A46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.DataSource", "src\Blog.DataSource\Blog.DataSource.csproj", "{29A57EC9-7782-440B-BA35-16036C396A46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlogOnCore.BLL", "src\MyBlogOnCore.BLL\MyBlogOnCore.BLL.csproj", "{7FFB3E35-B1D2-4316-B648-554D108C212A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.BLL", "src\Blog.BLL\Blog.BLL.csproj", "{7FFB3E35-B1D2-4316-B648-554D108C212A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetBlog.Infrastructure", "src\PetBlog.Infrastructure\PetBlog.Infrastructure.csproj", "{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Infrastructure", "src\Blog.Infrastructure\Blog.Infrastructure.csproj", "{47F85451-DC83-4EC7-8AF0-DB5C37CD9B73}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{6536AEDA-3C7D-4DB6-96F8-02F81DFAB4DA}"
 	ProjectSection(SolutionItems) = preProject

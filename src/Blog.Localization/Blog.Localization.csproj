@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Blog.Localization</AssemblyName>
+        <RootNamespace>Blog.Localization</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
