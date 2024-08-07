@@ -4,8 +4,8 @@ services:
     container_name: 'blog'
     image: 'blog'
     build:
-      context: .
-      dockerfile: ./MyBlogOnCore/Dockerfile
+      context: ./src
+      dockerfile: Dockerfile
     volumes:
       - ./storage:/app/storage
       - ./logs:/app/logs

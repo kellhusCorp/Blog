@@ -4,6 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AssemblyName>Blog.Infrastructure</AssemblyName>
+        <RootNamespace>Blog.Infrastructure</RootNamespace>
     </PropertyGroup>
 
 </Project>

@@ -1,0 +1,36 @@
+﻿version: "3.9"
+services:
+  blog:
+    container_name: 'blog'
+    image: 'blog'
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    volumes:
+      - ./storage:/app/storage
+      - ./logs:/app/logs
+    ports:
+      - "1500:80"
+    depends_on:
+      - "postgres_db"
+    networks:
+      - postgres
+
+  postgres_db:
+    container_name: postgres_container
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "blog"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "1112223334444"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - .:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
