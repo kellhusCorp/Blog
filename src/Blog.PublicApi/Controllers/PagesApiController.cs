@@ -1,5 +1,4 @@
-﻿using Blog.BLL.Dtos;
-using Blog.BLL.Queries;
+﻿using Blog.Application.UseCases.GetPages;
 using Blog.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,13 +23,13 @@ namespace MyBlogOnCore.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetPages()
+        public async Task<IActionResult> GetMetadata(CancellationToken cancellationToken)
         {
-            Result<IEnumerable<PageMetadataDto>> result = await _mediator.Send(new GetPagesMetadataQuery());
+            Result<IEnumerable<PageMetadataDto>> result = await _mediator.Send(new GetPagesMetadataQuery(), cancellationToken);
             
             if (!result.IsSuccessful)
             {
-                return NotFound();
+                return BadRequest(result.ErrorMessage);
             }
             
             return Ok(result.Value);
