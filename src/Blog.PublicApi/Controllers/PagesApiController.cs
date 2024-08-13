@@ -1,5 +1,6 @@
 ﻿using Blog.Application.UseCases.GetPages;
 using Blog.Domain;
+using Blog.PublicApi.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +28,7 @@ namespace MyBlogOnCore.Controllers
         {
             Result<IEnumerable<PageMetadataDto>> result = await _mediator.Send(new GetPagesMetadataQuery(), cancellationToken);
             
-            if (!result.IsSuccessful)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-            
-            return Ok(result.Value);
+            return result.AsOk();
         }
     }
 }

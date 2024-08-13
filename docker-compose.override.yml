@@ -2,32 +2,30 @@
 services:
   blog:
     container_name: 'blog'
-    image: 'blog'
-    build:
-      context: ./src
-      dockerfile: Dockerfile
+    image: blog:${IMAGE_ID}
+    environment:
+      - ConnectionStrings__Default=${BLOG_CONNECTIONSTRING}
+      - Credentials_AdminEmail=${BLOG_ADMINEMAIL}
+      - Credentials_AdminPassword=${BLOG_ADMINPASSWORD}
+      - BlogSettings_blogName=${BLOG_NAME}
+      - BlogSettings_blogDescription=${BLOG_DESCRIPTION}
+      - BlogSettings_newUsersCanRegister=${BLOG_USERSCANREGISTER}
     volumes:
       - ./storage:/app/storage
       - ./logs:/app/logs
-    ports:
-      - "1500:80"
     depends_on:
       - "postgres_db"
     networks:
       - postgres
 
   postgres_db:
-    container_name: postgres_container
-    image: postgres:13.3
     environment:
-      POSTGRES_DB: "blog"
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "1112223334444"
+      POSTGRES_DB: ${DB_DBNAME}
+      POSTGRES_USER: ${DB_DBUSER}
+      POSTGRES_PASSWORD: ${DB_DBPASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - .:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - ${DB_HOSTDATAPATH}:/var/lib/postgresql/data
     networks:
       - postgres
 

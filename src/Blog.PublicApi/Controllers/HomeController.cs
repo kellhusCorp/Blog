@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyBlogOnCore.Models;
 
-namespace MyBlogOnCore.Controllers;
+namespace Blog.PublicApi.Controllers;
 
 public class HomeController : Controller
 {

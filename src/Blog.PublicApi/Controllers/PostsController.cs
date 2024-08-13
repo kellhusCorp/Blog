@@ -1,14 +1,15 @@
-﻿using Blog.BLL.Commands;
+﻿using Blog.Application.UseCases.DeletePostComment;
+using Blog.BLL.Commands;
 using Blog.BLL.Handlers;
 using Blog.BLL.Providers;
 using Blog.Domain;
 using Blog.Infrastructure.Contexts;
+using Blog.PublicApi.Infrastructure.Paging;
 using Blog.PublicApi.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.Infrastructure.Paging;
 
 namespace Blog.PublicApi.Controllers;
 
@@ -41,8 +42,17 @@ public class PostsController : BaseController
     [Route("[controller]/[action]")]
     public async Task<IActionResult> DeleteComment(Guid commentId, string? back)
     {
-        await _mediator.Send(new DeleteCommentCommand(commentId));
+        var result = await _mediator.Send(new DeleteCommentCommand(commentId));
 
+        if (!result.IsSuccessful)
+        {
+            SetErrorMessage(result.ErrorMessage);
+        }
+        else
+        {
+            SetSuccessMessage("Комментарий успешно удалён");
+        }
+        
         if (back != null && !string.IsNullOrEmpty(back) && Url.IsLocalUrl(back))
         {
             return Redirect(back);

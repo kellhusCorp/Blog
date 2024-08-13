@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-namespace MyBlogOnCore.Infrastructure.Paging;
+namespace Blog.PublicApi.Infrastructure.Paging;
 
 public static class PropertyResolver
 {

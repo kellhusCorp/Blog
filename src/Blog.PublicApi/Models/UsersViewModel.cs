@@ -1,7 +1,7 @@
 ﻿using Blog.Domain;
-using MyBlogOnCore.Infrastructure.Paging;
+using Blog.PublicApi.Infrastructure.Paging;
 
-namespace MyBlogOnCore.Models;
+namespace Blog.PublicApi.Models;
 
 public class UsersViewModel
 {

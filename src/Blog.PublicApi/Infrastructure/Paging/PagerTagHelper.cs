@@ -1,8 +1,9 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.WebUtilities;
+using MyBlogOnCore.Infrastructure;
 
-namespace MyBlogOnCore.Infrastructure.Paging;
+namespace Blog.PublicApi.Infrastructure.Paging;
 
 [HtmlTargetElement("pager")]
 public class PagerTagHelper : TagHelper

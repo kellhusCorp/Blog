@@ -2,7 +2,7 @@
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 
-namespace MyBlogOnCore.Extensions
+namespace Blog.PublicApi.Extensions
 {
     public static class StaticFilesExtensions
     {

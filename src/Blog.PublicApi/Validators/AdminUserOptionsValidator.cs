@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyBlogOnCore.Options;
 
-namespace MyBlogOnCore.Validators;
+namespace Blog.PublicApi.Validators;
 
 public class AdminUserOptionsValidator
 {

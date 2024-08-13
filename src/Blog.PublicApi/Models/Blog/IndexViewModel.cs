@@ -1,5 +1,5 @@
 ﻿using Blog.Domain;
-using MyBlogOnCore.Infrastructure.Paging;
+using Blog.PublicApi.Infrastructure.Paging;
 
 namespace Blog.PublicApi.Models
 {

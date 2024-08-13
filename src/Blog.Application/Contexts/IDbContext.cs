@@ -20,5 +20,7 @@ namespace Blog.Application.Contexts
         public DbSet<Page> Pages { get; set; }
         
         public DbSet<Project> Projects { get; set; }
+        
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
