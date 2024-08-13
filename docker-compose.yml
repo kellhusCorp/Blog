@@ -10,7 +10,7 @@ services:
       - ./storage:/app/storage
       - ./logs:/app/logs
     ports:
-     - "1500:80"
+     - "1500:8080"
     depends_on:
      - "postgres_db"
     networks:
