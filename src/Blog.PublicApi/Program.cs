@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Reflection;
 using Blog.Application.Contexts;
 using Blog.Application.Profiles;
 using Blog.Application.UseCases.GetPages;
@@ -45,7 +44,8 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddDomainServices();
 
-builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(GetPagesMetadataQuery).Assembly));
+builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(GetPagesMetadataQuery).Assembly,
+    typeof(IncrementVisitsNumberHandler).Assembly));
 
 builder.Services.AddAutoMapper(expression =>
 {
@@ -91,7 +91,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-CultureInfo[] supportedCultures = new[] { new CultureInfo("ru"), new CultureInfo("en") };
+CultureInfo[] supportedCultures = { new CultureInfo("ru"), new CultureInfo("en") };
 
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
