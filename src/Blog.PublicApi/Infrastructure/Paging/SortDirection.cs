@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace MyBlogOnCore.Infrastructure.Paging;
+namespace Blog.PublicApi.Infrastructure.Paging;
 
 [DataContract]
 public enum SortDirection

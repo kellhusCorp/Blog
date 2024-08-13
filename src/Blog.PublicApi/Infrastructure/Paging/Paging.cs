@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Runtime.Serialization;
 
-namespace MyBlogOnCore.Infrastructure.Paging;
+namespace Blog.PublicApi.Infrastructure.Paging;
 
 [DataContract]
 public class Paging<T>

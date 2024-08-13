@@ -7,7 +7,7 @@ using Blog.BLL.Settings;
 using Blog.Domain;
 using Blog.Infrastructure.Contexts;
 using Blog.Localization;
-using Blog.PublicApi.Controllers;
+using Blog.PublicApi.Infrastructure.Paging;
 using Blog.PublicApi.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,10 +15,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MyBlogOnCore.Infrastructure.Paging;
 using MyBlogOnCore.Models;
 
-namespace MyBlogOnCore.Controllers
+namespace Blog.PublicApi.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdministrationController : BaseController

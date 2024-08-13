@@ -2,7 +2,7 @@
 using Blog.Infrastructure.Contexts;
 using Microsoft.AspNetCore.Identity;
 
-namespace MyBlogOnCore.Extensions
+namespace Blog.PublicApi.Extensions
 {
     public static class IdentityExtensions
     {

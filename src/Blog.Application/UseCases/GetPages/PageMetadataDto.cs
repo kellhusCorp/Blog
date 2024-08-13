@@ -1,6 +1,6 @@
 ﻿namespace Blog.Application.UseCases.GetPages
 {
-    public class PageDto
+    public class PageMetadataDto
     {
         public string Name { get; set; }
         

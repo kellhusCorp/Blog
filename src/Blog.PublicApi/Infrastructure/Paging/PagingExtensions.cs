@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
-namespace MyBlogOnCore.Infrastructure.Paging;
+namespace Blog.PublicApi.Infrastructure.Paging;
 
 public static class PagingExtensions
 {

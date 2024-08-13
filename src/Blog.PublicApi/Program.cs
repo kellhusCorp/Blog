@@ -1,10 +1,14 @@
 using System.Globalization;
+using System.Reflection;
+using Blog.Application.Contexts;
+using Blog.Application.Profiles;
+using Blog.Application.UseCases.GetPages;
 using Blog.BLL.Handlers;
 using Blog.BLL.Settings;
 using Blog.Infrastructure.Contexts;
+using Blog.PublicApi.Extensions;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using MyBlogOnCore.Extensions;
 using MyBlogOnCore.Middlewares;
 using MyBlogOnCore.Options;
 using MyBlogOnCore.Profiles;
@@ -28,7 +32,7 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Services.Configure<BlogSettings>(builder.Configuration.GetSection("BlogSettings"));
 builder.Services.Configure<StorageServicesSettings>(builder.Configuration.GetSection("StorageServicesSettings"));
 
-builder.Services.AddDbContext<BlogDbContext>(options =>
+builder.Services.AddDbContext<IDbContext, BlogDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -41,11 +45,12 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddDomainServices();
 
-builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(AddOrUpdateBlogHandler).Assembly));
+builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(GetPagesMetadataQuery).Assembly));
 
 builder.Services.AddAutoMapper(expression =>
 {
     expression.AddProfile<PageProfile>();
+    expression.AddProfile<DefaultProfile>();
 });
 
 builder.Services.AddLegacyHandlers();

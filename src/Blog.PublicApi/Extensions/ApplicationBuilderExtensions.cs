@@ -1,12 +1,12 @@
 ﻿using Blog.BLL.Exceptions;
 using Blog.Domain;
 using Blog.Infrastructure.Contexts;
+using Blog.PublicApi.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyBlogOnCore.Options;
-using MyBlogOnCore.Validators;
 
-namespace MyBlogOnCore.Extensions;
+namespace Blog.PublicApi.Extensions;
 
 public static class ApplicationBuilderExtensions
 {

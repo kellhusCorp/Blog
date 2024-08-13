@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Blog.Domain;
 using Blog.Localization;
-using MyBlogOnCore.Infrastructure.Paging;
+using Blog.PublicApi.Infrastructure.Paging;
 
-namespace MyBlogOnCore.Models;
+namespace Blog.PublicApi.Models;
 
 public class ImagesViewModel
 {

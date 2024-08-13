@@ -3,7 +3,7 @@ using Blog.BLL.Providers;
 using Blog.BLL.Repositories;
 using Blog.BLL.Services;
 
-namespace MyBlogOnCore.Extensions
+namespace Blog.PublicApi.Extensions
 {
     public static class ServicesExtensions
     {
