@@ -4,7 +4,7 @@ services:
     container_name: 'blog'
     image: blog:${IMAGE_ID}
     environment:
-      - ConnectionStrings__Default=${BLOG_CONNECTIONSTRING}
+      - ConnectionStrings__DefaultConnection=${BLOG_CONNECTIONSTRING}
       - Credentials__AdminEmail=${BLOG_ADMINEMAIL}
       - Credentials__AdminPassword=${BLOG_ADMINPASSWORD}
       - BlogSettings__blogName=${BLOG_NAME}
