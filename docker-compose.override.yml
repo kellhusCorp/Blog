@@ -5,11 +5,13 @@ services:
     image: blog:${IMAGE_ID}
     environment:
       - ConnectionStrings__Default=${BLOG_CONNECTIONSTRING}
-      - Credentials_AdminEmail=${BLOG_ADMINEMAIL}
-      - Credentials_AdminPassword=${BLOG_ADMINPASSWORD}
-      - BlogSettings_blogName=${BLOG_NAME}
-      - BlogSettings_blogDescription=${BLOG_DESCRIPTION}
-      - BlogSettings_newUsersCanRegister=${BLOG_USERSCANREGISTER}
+      - Credentials__AdminEmail=${BLOG_ADMINEMAIL}
+      - Credentials__AdminPassword=${BLOG_ADMINPASSWORD}
+      - BlogSettings__blogName=${BLOG_NAME}
+      - BlogSettings__blogDescription=${BLOG_DESCRIPTION}
+      - BlogSettings__newUsersCanRegister=${BLOG_USERSCANREGISTER}
+      - StorageServicesSettings__ImagesRootDirectory=${BLOG_IMAGEROOTDIRECTORY}
+      - StorageServicesSettings__FilesRootDirectory=${BLOG_FILESROOTDIRECTORY}
     volumes:
       - ./storage:/app/storage
       - ./logs:/app/logs
