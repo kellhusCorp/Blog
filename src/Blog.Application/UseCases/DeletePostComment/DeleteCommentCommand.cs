@@ -1,5 +1,4 @@
-﻿using Blog.BLL.Handlers;
-using Blog.Domain;
+﻿using Blog.Domain;
 using MediatR;
 
 namespace Blog.Application.UseCases.DeletePostComment

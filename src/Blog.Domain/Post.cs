@@ -43,12 +43,12 @@ public sealed class Post : BaseEntity
     public string? AuthorId { get; set; }
     
     public User? Author { get; set; }
-    
-    public ICollection<TagAssignment>? TagAssignments { get; set; }
-    
-    public ICollection<Comment>? Comments { get; set; }
-    
-    public ICollection<PostFile>? Files { get; set; }
+
+    public ICollection<TagAssignment> TagAssignments { get; set; } = [];
+
+    public ICollection<Comment> Comments { get; set; } = [];
+
+    public ICollection<PostFile> Files { get; set; } = [];
     
     [NotMapped]
     public string Url => $"{PublishDate.Year}/{PublishDate.Month}/{PublishDate.Day}/{PermanentLink}";

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model Blog.Domain.Post
+@model Blog.Application.Dtos.PostDto
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 <article class="mb-4 mt-4">
@@ -19,21 +19,21 @@
 
         <div class="d-flex justify-content-center" style="gap: 20px;">
 
-            <a href="~/Blog/@Model.Url#Comments" class="text-decoration-none">
+            <a class="text-decoration-none" asp-controller="Posts" asp-action="Entry" asp-route-year="@Model.PublishDate.Year" asp-route-month="@Model.PublishDate.Month" asp-route-day="@Model.PublishDate.Day" asp-route-id="@Model.PermanentLink">
                 <i class="fas fa-comments ml-md-4"></i> @Model.Comments!.Count
             </a>
-            
+
             <span class="text-muted">
                 <i class="fa fa-chart-line ml-md-4"></i> @Model.VisitsNumber @Localizer["Visits"]
             </span>
 
-            @if (Model.TagAssignments!.Count > 0)
+            @if (Model.TagAssignments.Count > 0)
             {
                 var counter = -1;
                 <div class="d-block">
                     <i class="fas fa-tags ml-md-4"></i>
 
-                    @foreach (var tag in Model.TagAssignments.Select(t => t.Tag!.Name).OrderBy(t => t))
+                    @foreach (var tag in Model.TagAssignments.Select(t => t.Tag.Name).OrderBy(t => t))
                     {
                         counter++;
                         var split = counter < Model.TagAssignments.Count - 1 ? ", " : string.Empty;
@@ -48,10 +48,12 @@
             @if (User.IsInRole("Admin"))
             {
                 <span class="float-lg-right d-print-none">
-                    <a href="~/Blog/@Model.Url/Edit">
+                    <a asp-action="EditBlog" asp-controller="Administration" asp-route-year="@Model.PublishDate.Year" asp-route-month="@Model.PublishDate.Month" asp-route-day="@Model.PublishDate.Day" asp-route-id="@Model.PermanentLink">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a href="~/Blog/@Model.Url/Edit">@Localizer["Edit"]</a>
+                    <a asp-action="EditBlog" asp-controller="Administration" asp-route-year="@Model.PublishDate.Year" asp-route-month="@Model.PublishDate.Month" asp-route-day="@Model.PublishDate.Day" asp-route-id="@Model.PermanentLink">
+                        @Localizer["Edit"]
+                    </a>
                 </span>
             }
         </div>
