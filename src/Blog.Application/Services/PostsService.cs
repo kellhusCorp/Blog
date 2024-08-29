@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Application.Services
 {
-    public class PostsService : IApplicationService
+    public sealed class PostsService : IApplicationService
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
