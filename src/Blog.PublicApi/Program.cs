@@ -1,16 +1,17 @@
 using System.Globalization;
 using Blog.Application.Contexts;
+using Blog.Application.Extensions;
 using Blog.Application.Profiles;
 using Blog.Application.UseCases.GetPages;
 using Blog.BLL.Handlers;
 using Blog.BLL.Settings;
 using Blog.Infrastructure.Contexts;
 using Blog.PublicApi.Extensions;
+using Blog.PublicApi.Profiles;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using MyBlogOnCore.Middlewares;
 using MyBlogOnCore.Options;
-using MyBlogOnCore.Profiles;
 using NLog;
 using NLog.Web;
 
@@ -47,13 +48,19 @@ builder.Services.AddDomainServices();
 builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(GetPagesMetadataQuery).Assembly,
     typeof(IncrementVisitsNumberHandler).Assembly));
 
-builder.Services.AddAutoMapper(expression =>
+// builder.Services.AddAutoMapper(expression =>
+// {
+//     expression.AddProfile<PageProfile>();
+//     expression.AddProfile<DefaultProfile>();
+// });
+
+builder.Services.AddAutoMapper(configuration =>
 {
-    expression.AddProfile<PageProfile>();
-    expression.AddProfile<DefaultProfile>();
+    configuration.AddMaps(typeof(PageProfile).Assembly, typeof(DefaultProfile).Assembly);
 });
 
 builder.Services.AddLegacyHandlers();
+builder.Services.AddApplicationServices();
 
 WebApplication app = builder.Build();
 

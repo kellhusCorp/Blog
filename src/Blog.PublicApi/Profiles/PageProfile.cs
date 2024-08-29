@@ -2,7 +2,7 @@
 using Blog.BLL.Dtos;
 using Blog.Domain;
 
-namespace MyBlogOnCore.Profiles
+namespace Blog.PublicApi.Profiles
 {
     public class PageProfile : Profile
     {

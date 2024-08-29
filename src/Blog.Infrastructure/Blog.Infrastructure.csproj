@@ -18,7 +18,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Blog.Application\Blog.Application.csproj" />
       <ProjectReference Include="..\Blog.Application\Blog.Application.csproj" />
       <ProjectReference Include="..\Blog.Domain\Blog.Domain.csproj" />
     </ItemGroup>

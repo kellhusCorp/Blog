@@ -1,12 +1,11 @@
 ﻿using Blog.Application.Contexts;
-using Blog.Application.UseCases.DeletePostComment;
 using Blog.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.BLL.Handlers
+namespace Blog.Application.UseCases.DeletePostComment
 {
-    public class DeleteCommentHandler : IRequestHandler<DeleteCommentCommand, Result<DeleteCommentResponse>>
+    public sealed class DeleteCommentHandler : IRequestHandler<DeleteCommentCommand, Result<DeleteCommentResponse>>
     {
         private readonly IDbContext context;
 

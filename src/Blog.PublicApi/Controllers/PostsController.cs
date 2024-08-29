@@ -1,4 +1,6 @@
-﻿using Blog.Application.UseCases.DeletePostComment;
+﻿using AutoMapper;
+using Blog.Application.UseCases.DeletePostComment;
+using Blog.Application.UseCases.GetPostByLink;
 using Blog.BLL.Commands;
 using Blog.BLL.Handlers;
 using Blog.BLL.Providers;
@@ -16,19 +18,21 @@ namespace Blog.PublicApi.Controllers;
 public class PostsController : BaseController
 {
     private const int EntriesPerPage = 10;
-    
+
     private readonly BlogDbContext context;
     private readonly ICommandHandler<AddCommentCommand> addCommentHandler;
     private readonly ICommandHandler<IncrementBlogFileCounterCommand> incrementBlogFileCounterCommandHandler;
     private readonly IBlogFileProvider blogFileProvider;
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
     public PostsController(
         BlogDbContext context,
-        ICommandHandler<AddCommentCommand> addCommentHandler, 
+        ICommandHandler<AddCommentCommand> addCommentHandler,
         ICommandHandler<IncrementBlogFileCounterCommand> incrementBlogFileCounterCommandHandler,
         IBlogFileProvider blogFileProvider,
-        IMediator mediator) 
+        IMediator mediator,
+        IMapper mapper)
         : base(context)
     {
         this.context = context;
@@ -36,6 +40,7 @@ public class PostsController : BaseController
         this.incrementBlogFileCounterCommandHandler = incrementBlogFileCounterCommandHandler;
         this.blogFileProvider = blogFileProvider;
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     [Authorize(Roles = "Admin")]
@@ -52,15 +57,15 @@ public class PostsController : BaseController
         {
             SetSuccessMessage("Комментарий успешно удалён");
         }
-        
+
         if (back != null && !string.IsNullOrEmpty(back) && Url.IsLocalUrl(back))
         {
             return Redirect(back);
         }
-        
+
         return RedirectToAction(nameof(Index));
     }
-    
+
     [Route("")]
     [Route("[controller]")]
     [Route("[controller]/Index")]
@@ -72,12 +77,12 @@ public class PostsController : BaseController
         paging.Top = EntriesPerPage;
 
         var query = context.Posts
-                        .Include(b => b.Author)
-                        .Include(b => b.TagAssignments!)
-                        .ThenInclude(b => b.Tag)
-                        .AsNoTracking()
-                        .Where(e => (e.IsVisible && e.PublishDate <= DateTimeOffset.Now)
-                            || (this.User.Identity != null && this.User.Identity.IsAuthenticated));
+            .Include(b => b.Author)
+            .Include(b => b.TagAssignments!)
+            .ThenInclude(b => b.Tag)
+            .AsNoTracking()
+            .Where(e => (e.IsVisible && e.PublishDate <= DateTimeOffset.Now)
+                        || (this.User.Identity != null && this.User.Identity.IsAuthenticated));
 
         if (!string.IsNullOrEmpty(tag))
         {
@@ -100,7 +105,7 @@ public class PostsController : BaseController
         var popularBlogEntries = await context.Posts
             .AsNoTracking()
             .Where(e => (e.IsVisible && e.PublishDate <= DateTimeOffset.Now)
-                || (this.User.Identity != null && this.User.Identity.IsAuthenticated))
+                        || (this.User.Identity != null && this.User.Identity.IsAuthenticated))
             .OrderByDescending(b => b.VisitsNumber)
             .Take(5)
             .ToListAsync();
@@ -128,29 +133,14 @@ public class PostsController : BaseController
 
         return View(model);
     }
-    
+
     [Route("[controller]/{year:int}/{month:int}/{day:int}/{id}")]
-    public async Task<IActionResult> Entry(string id)
+    public async Task<IActionResult> Entry(string id, CancellationToken cancellationToken)
     {
-        var post = await GetByPermanentLink(id);
-
-        if (post == null)
-        {
-            return NotFound();
-        }
-
-        if (User.Identity == null || !User.Identity.IsAuthenticated)
-        {
-            await _mediator.Send(new IncrementVisitsNumberCommand(post.Id));
-            post.VisitsNumber++;
-        }
-
-        return View(new BlogViewModel
-        {
-            BlogEntry = post,
-            RelatedBlogEntries = await GetRelatedPosts(post)
-        });
+        var result = await _mediator.Send(new GetPostWithRelatedByLinkQuery(id), cancellationToken);
+        return View(_mapper.Map<PostViewModel>(result.Value));
     }
+
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -172,21 +162,18 @@ public class PostsController : BaseController
             model.BlogEntry = entry;
             model.RelatedBlogEntries = await GetRelatedPosts(entry);
         }
-        
+
         var comment = new Comment(model.Comment.Name, model.Comment.Comment)
         {
             Email = model.Comment.Email,
             Homepage = model.Comment.Homepage,
-            AdminPost = User.Identity is {IsAuthenticated: true} && User.IsInRole("Admin"),
+            AdminPost = User.Identity is { IsAuthenticated: true } && User.IsInRole("Admin"),
             BlogId = entry.Id
         };
 
-        await addCommentHandler.ExecuteAsync(new AddCommentCommand(comment)
-        {
-            Referer = Request.GetTypedHeaders().Referer?.ToString()
-        });
+        await addCommentHandler.ExecuteAsync(new AddCommentCommand(comment) { Referer = Request.GetTypedHeaders().Referer?.ToString() });
 
-        return RedirectToAction(nameof(Entry), new {Id = id});
+        return RedirectToAction(nameof(Entry), new { Id = id });
     }
 
     [HttpGet]
@@ -196,7 +183,7 @@ public class PostsController : BaseController
         {
             return NotFound();
         }
-        
+
         var blogFile = await context.PostFiles
             .AsNoTracking()
             .SingleOrDefaultAsync(b => b.Id == id);
@@ -205,25 +192,22 @@ public class PostsController : BaseController
         {
             return NotFound();
         }
-        
+
         if (User.Identity is not { IsAuthenticated: true })
         {
             await incrementBlogFileCounterCommandHandler.ExecuteAsync(new IncrementBlogFileCounterCommand(blogFile.Id));
         }
-        
+
         var data = await blogFileProvider.GetFileAsync(blogFile.Path);
 
-        var file = new FileContentResult(data, "application/octet-stream")
-        {
-            FileDownloadName = blogFile.Name
-        };
-        
+        var file = new FileContentResult(data, "application/octet-stream") { FileDownloadName = blogFile.Name };
+
         return file;
     }
-    
+
     protected sealed override async Task<Post?> GetByPermanentLink(string header)
     {
-        var entry =  await base.GetByPermanentLink(header);
+        var entry = await base.GetByPermanentLink(header);
         if (entry != null)
         {
             entry.Comments = await context.Comments
@@ -235,7 +219,7 @@ public class PostsController : BaseController
 
         return entry;
     }
-    
+
     private async Task<List<Post>> GetRelatedPosts(Post post)
     {
         var tagIds = post.TagAssignments!.Select(t => t.TagId).ToList();

@@ -1,4 +1,4 @@
 namespace Blog.Application.UseCases.DeletePostComment
 {
-    public class DeleteCommentResponse;
+    public sealed class DeleteCommentResponse;
 }
