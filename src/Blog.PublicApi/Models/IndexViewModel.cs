@@ -1,4 +1,5 @@
 ﻿using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.PublicApi.Infrastructure.Paging;
 
 namespace Blog.PublicApi.Models;

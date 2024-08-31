@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Blog.Localization;
 
-namespace Blog.Domain;
+namespace Blog.Domain.Entities;
 
 public abstract class BaseEntity
 {

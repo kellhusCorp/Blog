@@ -3,6 +3,7 @@ using Blog.Application.Contexts;
 using Blog.Application.Dtos;
 using Blog.Application.Services;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,5 @@
 ﻿using Blog.Domain;
+using Blog.Domain.Entities;
 using MyBlogOnCore.Models;
 
 namespace Blog.PublicApi.Models;

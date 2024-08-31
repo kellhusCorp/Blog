@@ -4,6 +4,7 @@ using Blog.Application.Contexts;
 using Blog.BLL.Exceptions;
 using Blog.BLL.Services;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Localization;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ public class BlogService : IBlogService<Post>
         _context = context;
     }
 
-    public async Task AddOrUpdate(Domain.Post entity, IEnumerable<string> tags)
+    public async Task AddOrUpdate(Post entity, IEnumerable<string> tags)
     {
         var blogEntryWithSamePermalink = _context.Posts
             .Any(b => b.Id != entity.Id && b.PermanentLink == entity.PermanentLink);

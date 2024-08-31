@@ -1,4 +1,5 @@
 ﻿using Blog.Domain;
+using Blog.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.PublicApi.Extensions

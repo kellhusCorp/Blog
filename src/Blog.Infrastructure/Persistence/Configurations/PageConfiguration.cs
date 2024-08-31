@@ -1,11 +1,12 @@
+using Blog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Blog.Infrastructure.Persistence.Configurations
 {
-    public class PageConfiguration : IEntityTypeConfiguration<Domain.Page>
+    public class PageConfiguration : IEntityTypeConfiguration<Page>
     {
-        public void Configure(EntityTypeBuilder<Domain.Page> builder)
+        public void Configure(EntityTypeBuilder<Page> builder)
         {
             builder.HasIndex(x => new { x.Name })
                 .IsUnique();

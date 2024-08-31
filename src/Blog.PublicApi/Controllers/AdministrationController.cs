@@ -5,6 +5,7 @@ using Blog.BLL.Commands;
 using Blog.BLL.Exceptions;
 using Blog.BLL.Handlers;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
 using Blog.Localization;
 using Blog.PublicApi.Infrastructure.Paging;

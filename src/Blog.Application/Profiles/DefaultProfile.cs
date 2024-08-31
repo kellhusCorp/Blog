@@ -3,6 +3,7 @@ using Blog.Application.Dtos;
 using Blog.Application.UseCases.GetPages;
 using Blog.Application.UseCases.GetPostByLink;
 using Blog.Domain;
+using Blog.Domain.Entities;
 
 namespace Blog.Application.Profiles
 {

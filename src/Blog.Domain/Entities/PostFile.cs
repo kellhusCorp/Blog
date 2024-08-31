@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Blog.Localization;
 
-namespace Blog.Domain;
+namespace Blog.Domain.Entities;
 
 public class PostFile : BaseEntity
 {

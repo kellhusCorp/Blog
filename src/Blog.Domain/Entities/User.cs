@@ -2,7 +2,7 @@
 using Blog.Localization;
 using Microsoft.AspNetCore.Identity;
 
-namespace Blog.Domain;
+namespace Blog.Domain.Entities;
 
 public class User : IdentityUser
 {

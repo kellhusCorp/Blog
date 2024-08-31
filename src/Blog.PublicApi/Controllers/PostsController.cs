@@ -5,6 +5,7 @@ using Blog.Application.UseCases.GetPostByLink;
 using Blog.BLL.Commands;
 using Blog.BLL.Handlers;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
 using Blog.PublicApi.Infrastructure.Paging;
 using Blog.PublicApi.Models;

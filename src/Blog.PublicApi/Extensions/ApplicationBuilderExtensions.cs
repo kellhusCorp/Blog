@@ -1,5 +1,6 @@
 ﻿using Blog.BLL.Exceptions;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
 using Blog.PublicApi.Validators;
 using Microsoft.AspNetCore.Identity;

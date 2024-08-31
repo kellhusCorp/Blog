@@ -1,4 +1,4 @@
-﻿namespace Blog.Domain
+﻿namespace Blog.Domain.Entities
 {
     public struct Result<T>
     {

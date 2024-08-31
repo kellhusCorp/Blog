@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Blog.BLL.Commands;
 using Blog.BLL.Exceptions;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
 using Blog.Localization;
 using MediatR;
@@ -63,7 +64,7 @@ namespace Blog.BLL.Handlers
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task AddTagsAsync(Domain.Post post, IEnumerable<string> tags)
+        private async Task AddTagsAsync(Post post, IEnumerable<string> tags)
         {
             var existingTags = await _context.Tags.ToListAsync();
 

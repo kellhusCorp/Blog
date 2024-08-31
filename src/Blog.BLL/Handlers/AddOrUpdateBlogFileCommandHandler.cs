@@ -3,6 +3,7 @@ using Blog.Application.Factories;
 using Blog.Application.Providers;
 using Blog.BLL.Commands;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;

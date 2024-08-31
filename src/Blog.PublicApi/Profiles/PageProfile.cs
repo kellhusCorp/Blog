@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Blog.BLL.Dtos;
 using Blog.Domain;
+using Blog.Domain.Entities;
 
 namespace Blog.PublicApi.Profiles
 {

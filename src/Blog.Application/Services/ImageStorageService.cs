@@ -3,6 +3,7 @@ using Blog.Application.Enums;
 using Blog.Application.Factories;
 using Blog.Application.Providers;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Application.Services;

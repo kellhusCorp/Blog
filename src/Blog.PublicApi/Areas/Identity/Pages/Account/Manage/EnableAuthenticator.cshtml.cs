@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.Encodings.Web;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -4,6 +4,7 @@ using Blog.Application.Factories;
 using Blog.Application.Providers;
 using Blog.Application.Services;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
