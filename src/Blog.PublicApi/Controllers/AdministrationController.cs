@@ -233,14 +233,6 @@ namespace Blog.PublicApi.Controllers
                 return null;
             }
 
-            //your custom code logic here
-
-            //1)check if the file is image
-
-            //2)check if the file is too large
-
-            //etc
-
             using (MemoryStream ms = new())
             {
                 await upload.OpenReadStream().CopyToAsync(ms);
