@@ -101,7 +101,7 @@
             <partial name="_AddBlogFile" model="@blogEntryFileViewModel" />
             <br />
 
-            if (Model.Post.Files!.Count > 0)
+            if (Model.Post.Files.Count > 0)
             {
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped table-sm">
@@ -121,7 +121,9 @@
                             @foreach (var blogEntryFile in Model.Post.Files)
                             {
                                 <tr>
-                                    <td><a href="~/Blog/Download/@blogEntryFile.Id">@blogEntryFile.Name</a></td>
+                                    <td>
+                                        <a asp-controller="Posts" asp-action="Download" asp-route-id="@blogEntryFile.Id">@blogEntryFile.Name</a>
+                                    </td>
                                     <td class="text-right">@blogEntryFile.Counter</td>
                                     <td class="text-right d-print-none">
                                         <a asp-controller="Administration" asp-action="DeleteBlogFile" asp-route-id="@blogEntryFile.Id" title="@Localizer["Delete"]" class="confirmdelete" data-confirmmessage="@Localizer["Really delete file?"]"><i class="fa fa-trash text-danger"></i></a>
