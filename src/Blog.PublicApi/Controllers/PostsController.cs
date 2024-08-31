@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using Blog.Application.Providers;
 using Blog.Application.UseCases.DeletePostComment;
 using Blog.Application.UseCases.DownloadPostFile;
 using Blog.Application.UseCases.GetPostByLink;
 using Blog.BLL.Commands;
 using Blog.BLL.Handlers;
-using Blog.BLL.Providers;
 using Blog.Domain;
 using Blog.Infrastructure.Contexts;
 using Blog.PublicApi.Infrastructure.Paging;

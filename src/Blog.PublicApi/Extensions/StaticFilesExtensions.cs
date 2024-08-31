@@ -1,4 +1,4 @@
-﻿using Blog.BLL.Settings;
+﻿using Blog.Application.Settings;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 

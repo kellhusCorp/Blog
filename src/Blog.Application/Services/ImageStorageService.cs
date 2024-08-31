@@ -1,5 +1,5 @@
 ﻿using Blog.Application.Contexts;
-using Blog.BLL.Providers;
+using Blog.Application.Providers;
 using Blog.Domain;
 using Microsoft.EntityFrameworkCore;
 

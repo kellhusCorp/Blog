@@ -1,4 +1,4 @@
-﻿using Blog.BLL.Providers;
+﻿using Blog.Application.Settings;
 using Microsoft.Extensions.Options;
 
 namespace Blog.Application.Providers;
@@ -6,9 +6,9 @@ namespace Blog.Application.Providers;
 public class BlogFileProvider : BaseFileProvider, IBlogFileProvider
 {
     public BlogFileProvider(
-        IHostEnvironment hostEnvironment,
+        string pathToContentRootDirectory,
         IOptionsMonitor<StorageServicesSettings> servicesSettings)
-        : base(hostEnvironment, servicesSettings.CurrentValue.InvariantFilesRootDirectory)
+        : base(pathToContentRootDirectory, servicesSettings.CurrentValue.InvariantFilesRootDirectory)
     {
     }
 }

@@ -2,9 +2,9 @@ using System.Globalization;
 using Blog.Application.Contexts;
 using Blog.Application.Extensions;
 using Blog.Application.Profiles;
+using Blog.Application.Settings;
 using Blog.Application.UseCases.GetPages;
 using Blog.BLL.Handlers;
-using Blog.BLL.Settings;
 using Blog.Infrastructure.Contexts;
 using Blog.PublicApi.Extensions;
 using Blog.PublicApi.Profiles;
@@ -47,12 +47,6 @@ builder.Services.AddDomainServices();
 
 builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(GetPagesMetadataQuery).Assembly,
     typeof(IncrementVisitsNumberHandler).Assembly));
-
-// builder.Services.AddAutoMapper(expression =>
-// {
-//     expression.AddProfile<PageProfile>();
-//     expression.AddProfile<DefaultProfile>();
-// });
 
 builder.Services.AddAutoMapper(configuration =>
 {

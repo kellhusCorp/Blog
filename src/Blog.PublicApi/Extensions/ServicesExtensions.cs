@@ -1,9 +1,10 @@
 ﻿using Blog.Application.Providers;
 using Blog.Application.Services;
+using Blog.Application.Settings;
 using Blog.BLL.Handlers;
-using Blog.BLL.Providers;
 using Blog.BLL.Repositories;
 using Blog.BLL.Services;
+using Microsoft.Extensions.Options;
 
 namespace Blog.PublicApi.Extensions
 {
@@ -17,8 +18,21 @@ namespace Blog.PublicApi.Extensions
         {
             services.AddScoped<IImageStorageService, ImageStorageService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IImageFileProvider, ImageFileProvider>();
-            services.AddTransient<IBlogFileProvider, BlogFileProvider>();
+            
+            services.AddTransient<IImageFileProvider, ImageFileProvider>(provider =>
+            {
+                var env = provider.GetRequiredService<IHostEnvironment>();
+                var settings = provider.GetRequiredService<IOptionsMonitor<StorageServicesSettings>>().CurrentValue;
+                return new ImageFileProvider(env.ContentRootPath, settings);
+            });
+            
+            services.AddTransient<IBlogFileProvider, BlogFileProvider>(provider =>
+            {
+                var env = provider.GetRequiredService<IHostEnvironment>();
+                var settings = provider.GetRequiredService<IOptionsMonitor<StorageServicesSettings>>();
+                return new BlogFileProvider(env.ContentRootPath, settings);
+            });
+            
             services.AddScoped<IPagesRepository, PagesRepository>();
         }
 

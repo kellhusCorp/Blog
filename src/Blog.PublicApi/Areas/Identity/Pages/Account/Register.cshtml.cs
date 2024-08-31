@@ -5,7 +5,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using Blog.BLL.Settings;
+using Blog.Application.Settings;
 using Blog.Domain;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

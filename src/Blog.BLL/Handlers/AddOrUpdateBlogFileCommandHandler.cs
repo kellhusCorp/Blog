@@ -1,5 +1,5 @@
-﻿using Blog.BLL.Commands;
-using Blog.BLL.Providers;
+﻿using Blog.Application.Providers;
+using Blog.BLL.Commands;
 using Blog.Domain;
 using Blog.Infrastructure.Contexts;
 using JetBrains.Annotations;

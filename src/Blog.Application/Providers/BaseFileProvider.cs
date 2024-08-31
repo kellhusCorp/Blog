@@ -1,17 +1,14 @@
-﻿using Blog.BLL.Providers;
-
-namespace Blog.Application.Providers;
+﻿namespace Blog.Application.Providers;
 
 public abstract class BaseFileProvider : IFileProvider
 {
-    private readonly IHostEnvironment hostEnvironment;
+    private readonly string _pathToContentRootDirectory;
+    private readonly string _baseDirectory;
 
-    private readonly string baseDirectory;
-
-    public BaseFileProvider(IHostEnvironment hostEnvironment, string baseDirectory)
+    protected BaseFileProvider(string pathToContentRootDirectory, string baseDirectory)
     {
-        this.hostEnvironment = hostEnvironment;
-        this.baseDirectory = baseDirectory;
+        _pathToContentRootDirectory = pathToContentRootDirectory;
+        _baseDirectory = baseDirectory;
     }
 
     public async Task<byte[]> GetFileAsync(string fileName)
@@ -55,8 +52,8 @@ public abstract class BaseFileProvider : IFileProvider
     private string GetDirectory()
     {
         return Path.Combine(
-            hostEnvironment.ContentRootPath,
-            baseDirectory);
+            _pathToContentRootDirectory,
+            _baseDirectory);
     }
 
     private string GetFilePath(string fileName)

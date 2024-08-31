@@ -1,4 +1,4 @@
-namespace Blog.BLL.Settings;
+namespace Blog.Application.Settings;
 
 public class StorageServicesSettings
 {

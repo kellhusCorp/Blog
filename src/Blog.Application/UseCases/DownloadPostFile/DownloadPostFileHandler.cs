@@ -1,6 +1,6 @@
 ﻿using Blog.Application.Contexts;
+using Blog.Application.Providers;
 using Blog.Application.Services;
-using Blog.BLL.Providers;
 using Blog.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using Blog.Application.Services;
+using Blog.Application.Settings;
 using Blog.BLL.Commands;
 using Blog.BLL.Exceptions;
 using Blog.BLL.Handlers;
 using Blog.BLL.Services;
-using Blog.BLL.Settings;
 using Blog.Domain;
 using Blog.Infrastructure.Contexts;
 using Blog.Localization;
