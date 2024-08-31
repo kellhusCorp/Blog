@@ -1,5 +1,6 @@
 ﻿using Blog.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Blog.Application.Contexts
 {
@@ -22,5 +23,9 @@ namespace Blog.Application.Contexts
         public DbSet<Project> Projects { get; set; }
         
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        
+        Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
+        
+        // what method I should add here that executes update from EF? 
     }
 }

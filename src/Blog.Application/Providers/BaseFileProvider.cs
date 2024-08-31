@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Blog.BLL.Providers;
 
-namespace Blog.BLL.Providers;
+namespace Blog.Application.Providers;
 
 public abstract class BaseFileProvider : IFileProvider
 {

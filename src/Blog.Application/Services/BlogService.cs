@@ -1,25 +1,26 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using Blog.Application.Contexts;
 using Blog.BLL.Exceptions;
+using Blog.BLL.Services;
 using Blog.Domain;
-using Blog.Infrastructure.Contexts;
 using Blog.Localization;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.BLL.Services;
+namespace Blog.Application.Services;
 
-public class BlogService : IBlogService<Domain.Post>
+public class BlogService : IBlogService<Post>
 {
-    private readonly BlogDbContext context;
+    private readonly IDbContext _context;
 
-    public BlogService(BlogDbContext context)
+    public BlogService(IDbContext context)
     {
-        this.context = context;
+        _context = context;
     }
 
     public async Task AddOrUpdate(Domain.Post entity, IEnumerable<string> tags)
     {
-        var blogEntryWithSamePermalink = context.Posts
+        var blogEntryWithSamePermalink = _context.Posts
             .Any(b => b.Id != entity.Id && b.PermanentLink == entity.PermanentLink);
 
         if (blogEntryWithSamePermalink)
@@ -27,7 +28,7 @@ public class BlogService : IBlogService<Domain.Post>
             throw new BusinessException(string.Format(Resources.PermanentLinkInUse, entity.PermanentLink));
         }
 
-        var blogEntry = context.Posts
+        var blogEntry = _context.Posts
             .Include(b => b.TagAssignments!)
             .ThenInclude(b => b.Tag)
             .SingleOrDefault(b => b.Id == entity.Id);
@@ -42,12 +43,11 @@ public class BlogService : IBlogService<Domain.Post>
 
             blogEntry.UpdateDate = blogEntry.CreatedOn;
 
-            context.Posts.Add(blogEntry);
+            _context.Posts.Add(blogEntry);
         }
         else
         {
             blogEntry.UpdateDate = DateTimeOffset.UtcNow;
-
             blogEntry.Header = entity.Header;
             blogEntry.PermanentLink = entity.PermanentLink;
             blogEntry.ShortContent = entity.ShortContent;
@@ -59,18 +59,12 @@ public class BlogService : IBlogService<Domain.Post>
 
         await AddTagsAsync(blogEntry, tags);
 
-        await context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 
-    public async Task IncrementVisitsNumber(Guid id)
+    private async Task AddTagsAsync(Post entry, IEnumerable<string> tags)
     {
-        await context.Database.ExecuteSqlInterpolatedAsync(
-            $"UPDATE \"Blogs\" SET \"VisitsNumber\" = \"VisitsNumber\" + 1 WHERE \"Id\" = {id}");
-    }
-
-    private async Task AddTagsAsync(Domain.Post entry, IEnumerable<string> tags)
-    {
-        var existingTags = await context.Tags.ToListAsync();
+        var existingTags = await _context.Tags.ToListAsync();
 
         if (entry.TagAssignments == null)
         {
@@ -90,8 +84,7 @@ public class BlogService : IBlogService<Domain.Post>
             {
                 existingTag = new Tag(tag);
                 existingTags.Add(existingTag);
-
-                context.Tags.Add(existingTag);
+                _context.Tags.Add(existingTag);
             }
 
             entry.TagAssignments.Add(new TagAssignment()

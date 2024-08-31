@@ -3,6 +3,7 @@ using Blog.Application.Contexts;
 using Blog.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Blog.Infrastructure.Contexts;
 
@@ -20,6 +21,11 @@ public class BlogDbContext : IdentityDbContext<User>, IMigratoryContext, IDbCont
     }
     
     public DbSet<Project> Projects { get; set; }
+    
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        return Database.BeginTransactionAsync(cancellationToken);
+    }
 
     public DbSet<Post> Posts { get; set; }
     

@@ -1,8 +1,7 @@
-﻿using Blog.BLL.Settings;
-using Microsoft.Extensions.Hosting;
+﻿using Blog.BLL.Providers;
 using Microsoft.Extensions.Options;
 
-namespace Blog.BLL.Providers;
+namespace Blog.Application.Providers;
 
 public class ImageFileProvider : BaseFileProvider, IImageFileProvider
 {

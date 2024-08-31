@@ -1,18 +1,18 @@
-﻿using Blog.BLL.Providers;
+﻿using Blog.Application.Contexts;
+using Blog.BLL.Providers;
 using Blog.Domain;
-using Blog.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.BLL.Services;
+namespace Blog.Application.Services;
 
 public class ImageStorageService : IImageStorageService
 {
-    private readonly BlogDbContext context;
+    private readonly IDbContext _context;
     private readonly IImageFileProvider imageFileProvider;
 
-    public ImageStorageService(BlogDbContext context, IImageFileProvider imageFileProvider)
+    public ImageStorageService(IDbContext context, IImageFileProvider imageFileProvider)
     {
-        this.context = context;
+        _context = context;
         this.imageFileProvider = imageFileProvider;
     }
 
@@ -25,24 +25,24 @@ public class ImageStorageService : IImageStorageService
 
         var image = new Image(fileName);
 
-        context.Images.Add(image);
+        _context.Images.Add(image);
 
         await imageFileProvider.AddFileAsync($"{image.Id}.{extension}", data);
 
-        await context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         return $"{image.Id}.{extension}";
     }
 
     public async Task Delete(Guid id)
     {
-        var entity = await context.Images.SingleOrDefaultAsync(e => e.Id == id);
+        var entity = await _context.Images.SingleOrDefaultAsync(e => e.Id == id);
 
         if (entity != null)
         {
-            context.Images.Remove(entity);
+            _context.Images.Remove(entity);
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             await imageFileProvider.DeleteFileAsync(entity.Path);
         }
