@@ -2,7 +2,6 @@
 using Blog.Application.Services;
 using Blog.Application.Settings;
 using Blog.BLL.Handlers;
-using Blog.BLL.Repositories;
 using Microsoft.Extensions.Options;
 
 namespace Blog.PublicApi.Extensions

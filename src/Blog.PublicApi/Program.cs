@@ -1,7 +1,6 @@
 using System.Globalization;
 using Blog.Application.Contexts;
 using Blog.Application.Extensions;
-using Blog.Application.Factories;
 using Blog.Application.Profiles;
 using Blog.Application.Settings;
 using Blog.Application.UseCases.GetPages;
@@ -11,23 +10,12 @@ using Blog.PublicApi.Extensions;
 using Blog.PublicApi.Profiles;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using MyBlogOnCore.Middlewares;
 using MyBlogOnCore.Options;
-using NLog;
-using NLog.Web;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-builder.Host.ConfigureLogging(logging =>
-    {
-        logging.ClearProviders();
-    })
-    .UseNLog();
 
 builder.Configuration.AddEnvironmentVariables();
 
