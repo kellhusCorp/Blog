@@ -1,30 +1,9 @@
-﻿using Blog.Application.Factories;
-using Blog.Application.Services;
-using Blog.Application.Settings;
-using Blog.BLL.Handlers;
-using Microsoft.Extensions.Options;
+﻿using Blog.BLL.Handlers;
 
 namespace Blog.PublicApi.Extensions
 {
     public static class ServicesExtensions
     {
-        /// <summary>
-        /// Добавляет необходиые доменные сервисы.
-        /// </summary>
-        /// <param name="services">Коллекция сервисов <see cref="IServiceCollection"/>.</param>
-        public static void AddDomainServices(this IServiceCollection services)
-        {
-            services.AddScoped<IImageStorageService, ImageStorageService>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
-            services.AddSingleton<IFileProviderFactory, FileProviderFactory>(serviceProvider =>
-            {
-                StorageServicesSettings settings = serviceProvider.GetRequiredService<IOptions<StorageServicesSettings>>().Value;
-                IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
-                return new FileProviderFactory(hostEnvironment.ContentRootPath, settings);
-            });
-        }
-
         /// <summary>
         /// Добавляет необходимые обработчики команд.
         /// </summary>

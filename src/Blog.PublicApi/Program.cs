@@ -1,6 +1,7 @@
 using System.Globalization;
 using Blog.Application.Contexts;
 using Blog.Application.Extensions;
+using Blog.Application.Factories;
 using Blog.Application.Profiles;
 using Blog.Application.Settings;
 using Blog.Application.UseCases.GetPages;
@@ -10,6 +11,7 @@ using Blog.PublicApi.Extensions;
 using Blog.PublicApi.Profiles;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MyBlogOnCore.Middlewares;
 using MyBlogOnCore.Options;
 
@@ -19,6 +21,13 @@ string? connectionString = builder.Configuration.GetConnectionString("DefaultCon
 
 builder.Configuration.AddEnvironmentVariables();
 
+builder.Services.AddSingleton<IFileProviderFactory, FileProviderFactory>(serviceProvider =>
+{
+    StorageServicesSettings settings = serviceProvider.GetRequiredService<IOptions<StorageServicesSettings>>().Value;
+    IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
+    return new FileProviderFactory(hostEnvironment.ContentRootPath, settings);
+});
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.Configure<BlogSettings>(builder.Configuration.GetSection("BlogSettings"));
 builder.Services.Configure<StorageServicesSettings>(builder.Configuration.GetSection("StorageServicesSettings"));
 builder.Services.AddDbContext<IDbContext, BlogDbContext>(options =>
@@ -31,8 +40,6 @@ builder.Services.AddLocalization();
 
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
-
-builder.Services.AddDomainServices();
 
 builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(GetPagesMetadataQuery).Assembly,
     typeof(IncrementVisitsNumberHandler).Assembly));

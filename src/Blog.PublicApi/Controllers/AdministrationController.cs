@@ -2,9 +2,7 @@
 using Blog.Application.Services;
 using Blog.Application.Settings;
 using Blog.BLL.Commands;
-using Blog.BLL.Exceptions;
 using Blog.BLL.Handlers;
-using Blog.Domain;
 using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
 using Blog.Localization;
@@ -133,18 +131,8 @@ namespace Blog.PublicApi.Controllers
                 await SetTagsAndAuthors(model);
                 return View(model);
             }
-
-            try
-            {
-                await _mediator.Send(new AddOrUpdateBlogCommand(model.Post
-                    , model.SelectedTagNames));
-            }
-            catch (BusinessException ex)
-            {
-                SetErrorMessage(ex.Message);
-                await SetTagsAndAuthors(model);
-                return View(model);
-            }
+            
+            await _mediator.Send(new AddOrUpdateBlogCommand(model.Post, model.SelectedTagNames));
 
             SetSuccessMessage(Resources.SavedSuccessfully);
 
