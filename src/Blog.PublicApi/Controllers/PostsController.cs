@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Blog.Application.Providers;
 using Blog.Application.UseCases.DeletePostComment;
 using Blog.Application.UseCases.DownloadPostFile;
 using Blog.Application.UseCases.GetPostByLink;
@@ -22,24 +21,18 @@ public class PostsController : BaseController
 
     private readonly BlogDbContext _context;
     private readonly ICommandHandler<AddCommentCommand> _addCommentHandler;
-    private readonly ICommandHandler<IncrementBlogFileCounterCommand> _incrementBlogFileCounterCommandHandler;
-    private readonly IBlogFileProvider _blogFileProvider;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
     public PostsController(
         BlogDbContext context,
         ICommandHandler<AddCommentCommand> addCommentHandler,
-        ICommandHandler<IncrementBlogFileCounterCommand> incrementBlogFileCounterCommandHandler,
-        IBlogFileProvider blogFileProvider,
         IMediator mediator,
         IMapper mapper)
         : base(context)
     {
         _context = context;
         _addCommentHandler = addCommentHandler;
-        _incrementBlogFileCounterCommandHandler = incrementBlogFileCounterCommandHandler;
-        _blogFileProvider = blogFileProvider;
         _mediator = mediator;
         _mapper = mapper;
     }
@@ -83,7 +76,7 @@ public class PostsController : BaseController
             .ThenInclude(b => b.Tag)
             .AsNoTracking()
             .Where(e => (e.IsVisible && e.PublishDate <= DateTimeOffset.Now)
-                        || (this.User.Identity != null && this.User.Identity.IsAuthenticated));
+                        || (User.Identity != null && User.Identity.IsAuthenticated));
 
         if (!string.IsNullOrEmpty(tag))
         {
@@ -206,7 +199,7 @@ public class PostsController : BaseController
 
     private async Task<List<Post>> GetRelatedPosts(Post post)
     {
-        var tagIds = post.TagAssignments!.Select(t => t.TagId).ToList();
+        var tagIds = post.TagAssignments.Select(t => t.TagId).ToList();
 
         var query = await _context.Posts
             .AsNoTracking()

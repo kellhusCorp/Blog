@@ -22,7 +22,7 @@ namespace Blog.Application.Factories
                 case FileProviderType.File:
                     return new FileProvider(_pathToContentRootDirectory, _storageServicesSettings.InvariantFilesRootDirectory);
                 case FileProviderType.Image:
-                    return new FileProvider(_pathToContentRootDirectory, _storageServicesSettings.InvariantFilesRootDirectory);
+                    return new FileProvider(_pathToContentRootDirectory, _storageServicesSettings.InvariantImageRootDirectory);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

@@ -33,11 +33,6 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.Configure<BlogSettings>(builder.Configuration.GetSection("BlogSettings"));
 builder.Services.Configure<StorageServicesSettings>(builder.Configuration.GetSection("StorageServicesSettings"));
-builder.Services.AddSingleton<IFileProviderFactory, FileProviderFactory>(serviceProvider =>
-{
-    StorageServicesSettings settings = serviceProvider.GetRequiredService<IOptions<StorageServicesSettings>>().Value;
-    return new FileProviderFactory(builder.Environment.ContentRootPath, settings);
-});
 builder.Services.AddDbContext<IDbContext, BlogDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
