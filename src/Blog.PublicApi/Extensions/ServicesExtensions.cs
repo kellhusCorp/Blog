@@ -24,8 +24,6 @@ namespace Blog.PublicApi.Extensions
                 IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
                 return new FileProviderFactory(hostEnvironment.ContentRootPath, settings);
             });
-            
-            services.AddScoped<IPagesRepository, PagesRepository>();
         }
 
         /// <summary>
