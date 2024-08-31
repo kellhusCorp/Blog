@@ -1,49 +1,54 @@
-﻿using Blog.Application.Providers;
+﻿using Blog.Application.Enums;
+using Blog.Application.Factories;
+using Blog.Application.Providers;
 using Blog.BLL.Commands;
 using Blog.Domain;
 using Blog.Infrastructure.Contexts;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.BLL.Handlers;
-
-[UsedImplicitly]
-public class AddOrUpdateBlogFileCommandHandler : ICommandHandler<AddOrUpdateBlogFileCommand>
+namespace Blog.BLL.Handlers
 {
-    private readonly BlogDbContext context;
-    private readonly IBlogFileProvider fileProvider;
-
-    public AddOrUpdateBlogFileCommandHandler(
-        BlogDbContext context,
-        IBlogFileProvider fileProvider)
+    [UsedImplicitly]
+    public class AddOrUpdateBlogFileCommandHandler : ICommandHandler<AddOrUpdateBlogFileCommand>
     {
-        this.context = context;
-        this.fileProvider = fileProvider;
-    }
-    
-    public async Task ExecuteAsync(AddOrUpdateBlogFileCommand command)
-    {
-        var fileName = command.FileName.Replace('/', '\\');
-        fileName = fileName.Substring(fileName.IndexOf('\\') + 1);
+        private readonly BlogDbContext _context;
+        private readonly IFileProviderFactory _fileProviderFactory;
 
-        var extension = fileName.Substring(fileName.LastIndexOf('.') + 1);
-        
-        PostFile? blogFile = await context.PostFiles
-            .SingleOrDefaultAsync(f => f.BlogId == command.BlogId && f.Name == fileName);
-        
-        if (blogFile == null)
+        public AddOrUpdateBlogFileCommandHandler(
+            BlogDbContext context,
+            IFileProviderFactory fileProviderFactory)
         {
-            blogFile = new PostFile(fileName)
-            {
-                BlogId = command.BlogId,
-                Name = fileName
-            };
-
-            await context.PostFiles.AddAsync(blogFile);
+            _context = context;
+            _fileProviderFactory = fileProviderFactory;
         }
-        
-        await fileProvider.AddFileAsync($"{blogFile.Id}.{extension}", command.Data);
 
-        await context.SaveChangesAsync();
+        public async Task ExecuteAsync(AddOrUpdateBlogFileCommand command)
+        {
+            string fileName = command.FileName.Replace('/', '\\');
+            fileName = fileName.Substring(fileName.IndexOf('\\') + 1);
+
+            string extension = fileName.Substring(fileName.LastIndexOf('.') + 1);
+
+            PostFile? blogFile = await _context.PostFiles
+                .SingleOrDefaultAsync(f => f.BlogId == command.BlogId && f.Name == fileName);
+
+            if (blogFile == null)
+            {
+                blogFile = new PostFile(fileName)
+                {
+                    BlogId = command.BlogId,
+                    Name = fileName
+                };
+
+                await _context.PostFiles.AddAsync(blogFile);
+            }
+
+            IFileProvider provider = _fileProviderFactory.GetFileProvider(FileProviderType.File);
+
+            await provider.AddFileAsync($"{blogFile.Id}.{extension}", command.Data);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

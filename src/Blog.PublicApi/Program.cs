@@ -1,6 +1,7 @@
 using System.Globalization;
 using Blog.Application.Contexts;
 using Blog.Application.Extensions;
+using Blog.Application.Factories;
 using Blog.Application.Profiles;
 using Blog.Application.Settings;
 using Blog.Application.UseCases.GetPages;
@@ -10,6 +11,7 @@ using Blog.PublicApi.Extensions;
 using Blog.PublicApi.Profiles;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MyBlogOnCore.Middlewares;
 using MyBlogOnCore.Options;
 using NLog;
@@ -31,7 +33,11 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.Configure<BlogSettings>(builder.Configuration.GetSection("BlogSettings"));
 builder.Services.Configure<StorageServicesSettings>(builder.Configuration.GetSection("StorageServicesSettings"));
-
+builder.Services.AddSingleton<IFileProviderFactory, FileProviderFactory>(serviceProvider =>
+{
+    StorageServicesSettings settings = serviceProvider.GetRequiredService<IOptions<StorageServicesSettings>>().Value;
+    return new FileProviderFactory(builder.Environment.ContentRootPath, settings);
+});
 builder.Services.AddDbContext<IDbContext, BlogDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

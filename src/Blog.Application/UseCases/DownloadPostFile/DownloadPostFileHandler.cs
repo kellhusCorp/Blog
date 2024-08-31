@@ -1,4 +1,6 @@
 ﻿using Blog.Application.Contexts;
+using Blog.Application.Enums;
+using Blog.Application.Factories;
 using Blog.Application.Providers;
 using Blog.Application.Services;
 using Blog.Domain;
@@ -12,13 +14,13 @@ namespace Blog.Application.UseCases.DownloadPostFile
         private const string DefaultContentType = "application/octet-stream";
         private readonly IDbContext _dbContext;
         private readonly PostsService _postsService;
-        private readonly IBlogFileProvider _blogFileProvider;
+        private readonly IFileProviderFactory _fileProviderFactory;
 
-        public DownloadPostFileHandler(IDbContext dbContext, IBlogFileProvider blogFileProvider, PostsService postsService)
+        public DownloadPostFileHandler(IDbContext dbContext, IFileProviderFactory fileProviderFactory, PostsService postsService)
         {
             _dbContext = dbContext;
+            _fileProviderFactory = fileProviderFactory;
             _postsService = postsService;
-            _blogFileProvider = blogFileProvider;
         }
         
         public async Task<Result<DownloadPostFileResponse>> Handle(DownloadPostFileQuery request, CancellationToken cancellationToken)
@@ -33,7 +35,9 @@ namespace Blog.Application.UseCases.DownloadPostFile
             
             _ = await _postsService.IncrementPostFileDownloadsNumber(request.PostFileId, cancellationToken);
             
-            var fileBytes = await _blogFileProvider.GetFileAsync(postFile.Path);
+            var provider = _fileProviderFactory.GetFileProvider(FileProviderType.File);
+            
+            var fileBytes = await provider.GetFileAsync(postFile.Path);
             
             return Result<DownloadPostFileResponse>.Success(new DownloadPostFileResponse
             {

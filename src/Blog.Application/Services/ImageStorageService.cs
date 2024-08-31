@@ -1,4 +1,6 @@
 ﻿using Blog.Application.Contexts;
+using Blog.Application.Enums;
+using Blog.Application.Factories;
 using Blog.Application.Providers;
 using Blog.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +10,12 @@ namespace Blog.Application.Services;
 public class ImageStorageService : IImageStorageService
 {
     private readonly IDbContext _context;
-    private readonly IImageFileProvider imageFileProvider;
+    private readonly IFileProviderFactory _fileProviderFactory;
 
-    public ImageStorageService(IDbContext context, IImageFileProvider imageFileProvider)
+    public ImageStorageService(IDbContext context, IFileProviderFactory fileProviderFactory)
     {
         _context = context;
-        this.imageFileProvider = imageFileProvider;
+        _fileProviderFactory = fileProviderFactory;
     }
 
     public async Task<string> AddOrUpdate(string filename, byte[] data)
@@ -27,7 +29,9 @@ public class ImageStorageService : IImageStorageService
 
         _context.Images.Add(image);
 
-        await imageFileProvider.AddFileAsync($"{image.Id}.{extension}", data);
+        var provider = _fileProviderFactory.GetFileProvider(FileProviderType.Image);
+        
+        await provider.AddFileAsync($"{image.Id}.{extension}", data);
 
         await _context.SaveChangesAsync();
 
@@ -44,7 +48,8 @@ public class ImageStorageService : IImageStorageService
 
             await _context.SaveChangesAsync();
 
-            await imageFileProvider.DeleteFileAsync(entity.Path);
+            var provider = _fileProviderFactory.GetFileProvider(FileProviderType.Image);
+            await provider.DeleteFileAsync(entity.Path);
         }
     }
 }

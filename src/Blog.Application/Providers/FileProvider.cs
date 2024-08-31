@@ -1,11 +1,11 @@
 ﻿namespace Blog.Application.Providers;
 
-public abstract class BaseFileProvider : IFileProvider
+public class FileProvider : IFileProvider
 {
     private readonly string _pathToContentRootDirectory;
     private readonly string _baseDirectory;
 
-    protected BaseFileProvider(string pathToContentRootDirectory, string baseDirectory)
+    public FileProvider(string pathToContentRootDirectory, string baseDirectory)
     {
         _pathToContentRootDirectory = pathToContentRootDirectory;
         _baseDirectory = baseDirectory;
