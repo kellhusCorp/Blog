@@ -2,7 +2,7 @@ using Blog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Blog.Infrastructure.Persistence.Configurations
+namespace Blog.Infrastructure.Configurations
 {
     public class PageConfiguration : IEntityTypeConfiguration<Page>
     {
