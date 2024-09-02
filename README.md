@@ -11,12 +11,12 @@
 
 ## Технологии
 
-- [.NET 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 - [ASP NET Core MVC](https://learn.microsoft.com/ru-ru/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0)
 - [Docker](https://www.docker.com/)
 - [CKEditor](https://ckeditor.com/)
 - [Bootstrap 5](https://getbootstrap.com/)
-- [EF Core 7](https://learn.microsoft.com/ru-ru/ef/core/what-is-new/ef-core-7.0/plan)
+- [EF Core 8](https://learn.microsoft.com/ru-ru/ef/core/what-is-new/ef-core-7.0/plan)
 - [MediatR](https://github.com/jbogard/MediatR)
 - [Swagger](https://swagger.io/)
 - [AutoMapper](https://automapper.org/)
