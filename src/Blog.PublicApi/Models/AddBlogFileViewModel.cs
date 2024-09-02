@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Blog.Localization;
 
-namespace MyBlogOnCore.Models;
+namespace Blog.PublicApi.Models;
 
 public class AddBlogFileViewModel
 {

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using Blog.Application.Contexts;
 using Blog.Application.Dtos;
 using Blog.Application.Services;
@@ -32,6 +33,7 @@ namespace Blog.Application.UseCases.GetPostByLink
                 _postsService = postsService;
             }
 
+            [SuppressMessage("ReSharper.DPA", "DPA0007: Large number of DB records", MessageId = "count: 152")]
             public async Task<Result<PostWithRelatedPostsDto>> Handle(GetPostWithRelatedByLinkQuery request, CancellationToken cancellationToken)
             {
                 var post = await _dbContext.Posts

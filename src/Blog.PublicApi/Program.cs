@@ -12,7 +12,6 @@ using Blog.PublicApi.Profiles;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MyBlogOnCore.Middlewares;
 using MyBlogOnCore.Options;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -41,8 +40,7 @@ builder.Services.AddLocalization();
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
 
-builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(GetPagesMetadataQuery).Assembly,
-    typeof(IncrementVisitsNumberHandler).Assembly));
+builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(typeof(GetPagesMetadataQuery).Assembly));
 
 builder.Services.AddAutoMapper(configuration =>
 {
@@ -55,8 +53,6 @@ builder.Services.AddApplicationServices();
 WebApplication app = builder.Build();
 
 app.ConfigureStaticFiles();
-
-app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.ApplyMigration<BlogDbContext>();
 

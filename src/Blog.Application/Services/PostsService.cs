@@ -3,9 +3,8 @@ using AutoMapper.QueryableExtensions;
 using Blog.Application.Contexts;
 using Blog.Application.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 
 namespace Blog.Application.Services
 {
@@ -16,6 +15,7 @@ namespace Blog.Application.Services
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ILogger<PostsService> _logger;
         private const int RelatedPostsCount = 3;
+        
         public PostsService(IDbContext dbContext, IMapper mapper, IDateTimeProvider dateTimeProvider, ILogger<PostsService> logger)
         {
             _dbContext = dbContext;

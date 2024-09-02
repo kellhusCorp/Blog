@@ -1,67 +1,66 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
-using Blog.BLL.Commands;
-using Blog.BLL.Exceptions;
-using Blog.Domain;
+using Blog.Application.Contexts;
 using Blog.Domain.Entities;
-using Blog.Infrastructure.Contexts;
 using Blog.Localization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.BLL.Handlers
+namespace Blog.Application.UseCases.UpdatePost
 {
-    public class AddOrUpdateBlogHandler : IRequestHandler<AddOrUpdateBlogCommand>
+    public class UpdatePostHandler : IRequestHandler<UpdatePostCommand, Result<Unit>>
     {
-        private readonly BlogDbContext _context;
+        private readonly IDbContext _context;
         
-        public AddOrUpdateBlogHandler(BlogDbContext context)
+        public UpdatePostHandler(IDbContext context)
         {
             _context = context;
         }
 
-        public async Task Handle(AddOrUpdateBlogCommand request, CancellationToken cancellationToken = default)
+        public async Task<Result<Unit>> Handle(UpdatePostCommand request, CancellationToken cancellationToken = default)
         {
             var blogEntryWithSamePermalink = _context.Posts
                 .Any(b => b.Id != request.Post.Id && b.PermanentLink == request.Post.PermanentLink);
 
             if (blogEntryWithSamePermalink)
             {
-                throw new BusinessException(string.Format(Resources.PermanentLinkInUse, request.Post.PermanentLink));
+                return Result<Unit>.Failure(string.Format(Resources.PermanentLinkInUse, request.Post.PermanentLink));
             }
 
-            var blog = _context.Posts
-                .Include(b => b.TagAssignments!)
+            var post = await _context.Posts
+                .Include(b => b.TagAssignments)
                 .ThenInclude(b => b.Tag)
-                .SingleOrDefault(b => b.Id == request.Post.Id);
+                .FirstOrDefaultAsync(b => b.Id == request.Post.Id, cancellationToken);
 
-            if (blog == null)
+            if (post is null)
             {
-                blog = request.Post;
-                blog.PermanentLink = Regex.Replace(
-                    blog.Header.ToLowerInvariant().Replace(" - ", "-").Replace(" ", "-"),
+                post = request.Post;
+                post.PermanentLink = Regex.Replace(
+                    post.Header.ToLowerInvariant().Replace(" - ", "-").Replace(" ", "-"),
                     "[^\\w^-]",
                     string.Empty);
 
-                blog.UpdateDate = blog.CreatedOn;
+                post.UpdateDate = post.CreatedOn;
 
-                _context.Posts.Add(blog);
+                _context.Posts.Add(post);
             }
             else
             {
-                blog.UpdateDate = DateTimeOffset.UtcNow;
-                blog.Header = request.Post.Header;
-                blog.PermanentLink = request.Post.PermanentLink;
-                blog.ShortContent = request.Post.ShortContent;
-                blog.Body = request.Post.Body;
-                blog.AuthorId = request.Post.AuthorId;
-                blog.PublishDate = request.Post.PublishDate;
-                blog.IsVisible = request.Post.IsVisible;
+                post.UpdateDate = DateTimeOffset.UtcNow;
+                post.Header = request.Post.Header;
+                post.PermanentLink = request.Post.PermanentLink;
+                post.ShortContent = request.Post.ShortContent;
+                post.Body = request.Post.Body;
+                post.AuthorId = request.Post.AuthorId;
+                post.PublishDate = request.Post.PublishDate;
+                post.IsVisible = request.Post.IsVisible;
             }
 
-            await AddTagsAsync(blog, request.Tags);
+            await AddTagsAsync(post, request.Tags);
 
             await _context.SaveChangesAsync(cancellationToken);
+            
+            return Result<Unit>.Success(Unit.Value);
         }
 
         private async Task AddTagsAsync(Post post, IEnumerable<string> tags)

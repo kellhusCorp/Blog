@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Blog.Application.UseCases.AddPostComment;
 using Blog.Application.UseCases.DeletePostComment;
 using Blog.Application.UseCases.DownloadPostFile;
 using Blog.Application.UseCases.GetPostByLink;
@@ -141,6 +142,8 @@ public class PostsController : BaseController
     [Route("[controller]/{year:int}/{month:int}/{day:int}/{id}")]
     public async Task<IActionResult> Entry(string id, BlogViewModel model)
     {
+        var result = await _mediator.Send()
+        
         var entry = await GetByPermanentLink(id);
 
         if (entry == null)

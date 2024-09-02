@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Blog.Application.Services;
 using Blog.Application.Settings;
-using Blog.BLL.Commands;
+using Blog.Application.UseCases.UpdatePost;
+using Blog.Application.UseCases.UpdatePostFile;
 using Blog.BLL.Handlers;
 using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
@@ -14,7 +15,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MyBlogOnCore.Models;
 
 namespace Blog.PublicApi.Controllers
 {
@@ -22,7 +22,6 @@ namespace Blog.PublicApi.Controllers
     public class AdministrationController : BaseController
     {
         private readonly IMediator _mediator;
-        private readonly ICommandHandler<AddOrUpdateBlogFileCommand> addOrUpdateBlogFileCommandHandler;
         private readonly BlogDbContext context;
         private readonly string imagesRootDirectory;
         private readonly IImageStorageService imageStorageService;
@@ -33,13 +32,11 @@ namespace Blog.PublicApi.Controllers
             UserManager<User> userManager,
             IImageStorageService imageStorageService,
             IOptionsMonitor<StorageServicesSettings> servicesSettings,
-            ICommandHandler<AddOrUpdateBlogFileCommand> addOrUpdateBlogFileCommandHandler,
             IMediator mediator) : base(context)
         {
             this.context = context;
             this.userManager = userManager;
             this.imageStorageService = imageStorageService;
-            this.addOrUpdateBlogFileCommandHandler = addOrUpdateBlogFileCommandHandler;
             _mediator = mediator;
             imagesRootDirectory = servicesSettings.CurrentValue.ImagesRootDirectory;
         }
@@ -132,7 +129,7 @@ namespace Blog.PublicApi.Controllers
                 return View(model);
             }
             
-            await _mediator.Send(new AddOrUpdateBlogCommand(model.Post, model.SelectedTagNames));
+            await _mediator.Send(new UpdatePostCommand(model.Post, model.SelectedTagNames));
 
             SetSuccessMessage(Resources.SavedSuccessfully);
 
@@ -244,7 +241,7 @@ namespace Blog.PublicApi.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddBlogFile(AddBlogFileViewModel model)
+        public async Task<IActionResult> AddPostFile(AddBlogFileViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -256,10 +253,15 @@ namespace Blog.PublicApi.Controllers
                 await model.File?.CopyToAsync(ms)!;
                 byte[] file = ms.ToArray();
 
-                await addOrUpdateBlogFileCommandHandler.ExecuteAsync(new AddOrUpdateBlogFileCommand(
+                var result = await _mediator.Send(new UpdatePostFileCommand(
                     model.File!.FileName,
                     file,
                     model.BlogId!.Value));
+
+                if (!result.IsSuccessful)
+                {
+                    return BadRequest(result.ErrorMessage);
+                }
             }
 
             SetSuccessMessage(Resources.SavedSuccessfully);
