@@ -104,7 +104,7 @@
  
 <section id="comments">
     <div class="row">
-        @foreach (var comment in Model.Post.Comments!.OrderByDescending(b => b.CreatedOn))
+        @foreach (var comment in Model.Post.Comments.OrderByDescending(b => b.CreatedOn))
         {
             var adminPostClass = comment.AdminPost ? "text-danger" : string.Empty;
             
