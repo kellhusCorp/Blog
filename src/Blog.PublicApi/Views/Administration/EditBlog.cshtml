@@ -1,4 +1,5 @@
-﻿@model Blog.PublicApi.Models.EditPostViewModel
+﻿@using Blog.PublicApi.Models
+@model Blog.PublicApi.Models.EditPostViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
     var existingEntry = !string.IsNullOrWhiteSpace(Model!.Post.Header);
@@ -101,7 +102,7 @@
             <partial name="_AddBlogFile" model="@blogEntryFileViewModel" />
             <br />
 
-            if (Model.Post.Files!.Count > 0)
+            if (Model.Post.Files.Count > 0)
             {
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped table-sm">
@@ -121,7 +122,9 @@
                             @foreach (var blogEntryFile in Model.Post.Files)
                             {
                                 <tr>
-                                    <td><a href="~/Blog/Download/@blogEntryFile.Id">@blogEntryFile.Name</a></td>
+                                    <td>
+                                        <a asp-controller="Posts" asp-action="Download" asp-route-id="@blogEntryFile.Id">@blogEntryFile.Name</a>
+                                    </td>
                                     <td class="text-right">@blogEntryFile.Counter</td>
                                     <td class="text-right d-print-none">
                                         <a asp-controller="Administration" asp-action="DeleteBlogFile" asp-route-id="@blogEntryFile.Id" title="@Localizer["Delete"]" class="confirmdelete" data-confirmmessage="@Localizer["Really delete file?"]"><i class="fa fa-trash text-danger"></i></a>
@@ -140,7 +143,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        CKEDITOR.replace("Blog_Body", {
+        CKEDITOR.replace('Post_Body', {
                 extraPlugins: 'codesnippet',
                 filebrowserImageUploadUrl: '/Administration/UploadImage'
         });

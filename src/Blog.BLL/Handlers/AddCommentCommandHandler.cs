@@ -16,7 +16,5 @@ public class AddCommentCommandHandler : ICommandHandler<AddCommentCommand>
     {
         context.Comments.Add(command.Comment);
         await context.SaveChangesAsync();
-        
-        //TODO add notification
     }
 }

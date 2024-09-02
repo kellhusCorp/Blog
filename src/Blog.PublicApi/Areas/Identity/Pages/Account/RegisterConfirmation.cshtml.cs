@@ -4,6 +4,7 @@
 
 using System.Text;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Blog.Application.Dtos;
+using Blog.Application.UseCases.AddPostComment;
 using Blog.Application.UseCases.GetPages;
-using Blog.Application.UseCases.GetPostByLink;
-using Blog.Domain;
+using Blog.Domain.Entities;
 
 namespace Blog.Application.Profiles
 {
@@ -20,6 +20,8 @@ namespace Blog.Application.Profiles
                 .ForMember(x => x.PostId, opt => opt.MapFrom(x => x.BlogId));
             CreateMap<User, AuthorDto>();
             CreateMap<Tag, TagDto>();
+
+            CreateMap<AddPostCommentCommand, Comment>();
         }
     }
 }

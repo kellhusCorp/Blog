@@ -1,4 +1,5 @@
 ﻿using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 

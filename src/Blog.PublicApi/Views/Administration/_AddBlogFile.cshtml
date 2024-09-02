@@ -1,7 +1,7 @@
-﻿@model AddBlogFileViewModel
+﻿@model Blog.PublicApi.Models.AddBlogFileViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
-<form asp-controller="Administration" asp-action="AddBlogFile" enctype="multipart/form-data" class="form-inline d-print-none">
+<form asp-controller="Administration" asp-action="AddPostFile" enctype="multipart/form-data" class="form-inline d-print-none">
     <div class="form-group input-group-sm">
         <input asp-for="File" class="form-control" />
         <span asp-validation-for="File" class="text-danger"></span>

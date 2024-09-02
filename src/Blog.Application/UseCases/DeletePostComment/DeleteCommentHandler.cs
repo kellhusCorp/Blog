@@ -1,5 +1,6 @@
 ﻿using Blog.Application.Contexts;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

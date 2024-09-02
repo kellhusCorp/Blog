@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using Blog.Application.UseCases.DeletePostComment;
+using Blog.Application.UseCases.DownloadPostFile;
 using Blog.Application.UseCases.GetPostByLink;
 using Blog.BLL.Commands;
 using Blog.BLL.Handlers;
-using Blog.BLL.Providers;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Infrastructure.Contexts;
 using Blog.PublicApi.Infrastructure.Paging;
 using Blog.PublicApi.Models;
@@ -19,26 +20,20 @@ public class PostsController : BaseController
 {
     private const int EntriesPerPage = 10;
 
-    private readonly BlogDbContext context;
-    private readonly ICommandHandler<AddCommentCommand> addCommentHandler;
-    private readonly ICommandHandler<IncrementBlogFileCounterCommand> incrementBlogFileCounterCommandHandler;
-    private readonly IBlogFileProvider blogFileProvider;
+    private readonly BlogDbContext _context;
+    private readonly ICommandHandler<AddCommentCommand> _addCommentHandler;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
     public PostsController(
         BlogDbContext context,
         ICommandHandler<AddCommentCommand> addCommentHandler,
-        ICommandHandler<IncrementBlogFileCounterCommand> incrementBlogFileCounterCommandHandler,
-        IBlogFileProvider blogFileProvider,
         IMediator mediator,
         IMapper mapper)
         : base(context)
     {
-        this.context = context;
-        this.addCommentHandler = addCommentHandler;
-        this.incrementBlogFileCounterCommandHandler = incrementBlogFileCounterCommandHandler;
-        this.blogFileProvider = blogFileProvider;
+        _context = context;
+        _addCommentHandler = addCommentHandler;
         _mediator = mediator;
         _mapper = mapper;
     }
@@ -76,13 +71,13 @@ public class PostsController : BaseController
         paging.SortDirection = SortDirection.Descending;
         paging.Top = EntriesPerPage;
 
-        var query = context.Posts
+        var query = _context.Posts
             .Include(b => b.Author)
             .Include(b => b.TagAssignments!)
             .ThenInclude(b => b.Tag)
             .AsNoTracking()
             .Where(e => (e.IsVisible && e.PublishDate <= DateTimeOffset.Now)
-                        || (this.User.Identity != null && this.User.Identity.IsAuthenticated));
+                        || (User.Identity != null && User.Identity.IsAuthenticated));
 
         if (!string.IsNullOrEmpty(tag))
         {
@@ -98,11 +93,11 @@ public class PostsController : BaseController
         }
 
         var entries = await query.GetPagedResultAsync(paging);
-        var tags = await context.Tags
+        var tags = await _context.Tags
             .AsNoTracking()
             .OrderBy(t => t.Name)
             .ToListAsync();
-        var popularBlogEntries = await context.Posts
+        var popularBlogEntries = await _context.Posts
             .AsNoTracking()
             .Where(e => (e.IsVisible && e.PublishDate <= DateTimeOffset.Now)
                         || (this.User.Identity != null && this.User.Identity.IsAuthenticated))
@@ -120,7 +115,7 @@ public class PostsController : BaseController
         {
             var ids = model.Entries.Select(e => e.Id).ToList();
 
-            var blogEntryComments = await context.Comments
+            var blogEntryComments = await _context.Comments
                 .AsNoTracking()
                 .Where(b => ids.Contains(b.BlogId!.Value))
                 .ToListAsync();
@@ -140,7 +135,6 @@ public class PostsController : BaseController
         var result = await _mediator.Send(new GetPostWithRelatedByLinkQuery(id), cancellationToken);
         return View(_mapper.Map<PostViewModel>(result.Value));
     }
-
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -171,38 +165,22 @@ public class PostsController : BaseController
             BlogId = entry.Id
         };
 
-        await addCommentHandler.ExecuteAsync(new AddCommentCommand(comment) { Referer = Request.GetTypedHeaders().Referer?.ToString() });
+        await _addCommentHandler.ExecuteAsync(new AddCommentCommand(comment) { Referer = Request.GetTypedHeaders().Referer?.ToString() });
 
         return RedirectToAction(nameof(Entry), new { Id = id });
     }
 
     [HttpGet]
-    public async Task<IActionResult> Download(Guid? id)
+    public async Task<IActionResult> Download(Guid id)
     {
-        if (id == null)
+        var result = await _mediator.Send(new DownloadPostFileQuery(id));
+        
+        if (!result.IsSuccessful)
         {
-            return NotFound();
+            return BadRequest(result.ErrorMessage);
         }
 
-        var blogFile = await context.PostFiles
-            .AsNoTracking()
-            .SingleOrDefaultAsync(b => b.Id == id);
-
-        if (blogFile == null)
-        {
-            return NotFound();
-        }
-
-        if (User.Identity is not { IsAuthenticated: true })
-        {
-            await incrementBlogFileCounterCommandHandler.ExecuteAsync(new IncrementBlogFileCounterCommand(blogFile.Id));
-        }
-
-        var data = await blogFileProvider.GetFileAsync(blogFile.Path);
-
-        var file = new FileContentResult(data, "application/octet-stream") { FileDownloadName = blogFile.Name };
-
-        return file;
+        return new FileContentResult(result.Value.File, result.Value.ContentType) { FileDownloadName = result.Value.FileName };
     }
 
     protected sealed override async Task<Post?> GetByPermanentLink(string header)
@@ -210,7 +188,7 @@ public class PostsController : BaseController
         var entry = await base.GetByPermanentLink(header);
         if (entry != null)
         {
-            entry.Comments = await context.Comments
+            entry.Comments = await _context.Comments
                 .AsNoTracking()
                 .Where(b => b.BlogId == entry.Id)
                 .OrderByDescending(b => b.CreatedOn)
@@ -222,9 +200,9 @@ public class PostsController : BaseController
 
     private async Task<List<Post>> GetRelatedPosts(Post post)
     {
-        var tagIds = post.TagAssignments!.Select(t => t.TagId).ToList();
+        var tagIds = post.TagAssignments.Select(t => t.TagId).ToList();
 
-        var query = await context.Posts
+        var query = await _context.Posts
             .AsNoTracking()
             .Where(e => e.IsVisible && e.PublishDate <= DateTimeOffset.UtcNow && e.Id != post.Id)
             .Where(e => e.TagAssignments!.Any(t => tagIds.Contains(t.TagId)))

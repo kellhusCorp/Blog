@@ -1,25 +1,9 @@
 ﻿using Blog.BLL.Handlers;
-using Blog.BLL.Providers;
-using Blog.BLL.Repositories;
-using Blog.BLL.Services;
 
 namespace Blog.PublicApi.Extensions
 {
     public static class ServicesExtensions
     {
-        /// <summary>
-        /// Добавляет необходиые доменные сервисы.
-        /// </summary>
-        /// <param name="services">Коллекция сервисов <see cref="IServiceCollection"/>.</param>
-        public static void AddDomainServices(this IServiceCollection services)
-        {
-            services.AddScoped<IImageStorageService, ImageStorageService>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IImageFileProvider, ImageFileProvider>();
-            services.AddTransient<IBlogFileProvider, BlogFileProvider>();
-            services.AddScoped<IPagesRepository, PagesRepository>();
-        }
-
         /// <summary>
         /// Добавляет необходимые обработчики команд.
         /// </summary>

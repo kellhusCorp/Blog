@@ -83,6 +83,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map" />
+      <_ContentIncludedByDefault Remove="Views\Projects\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Projects\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

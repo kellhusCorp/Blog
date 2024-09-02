@@ -1,5 +1,6 @@
 ﻿
 using Blog.Domain;
+using Blog.Domain.Entities;
 
 namespace MyBlogOnCore.Models;
 

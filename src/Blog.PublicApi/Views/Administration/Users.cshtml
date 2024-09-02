@@ -25,13 +25,13 @@
         <table class="table table-bordered table-hover table-striped">
             <thead>
             <tr>
-                <th paged-result="Model.Users" sort-column="@nameof(Blog.Domain.User.LastName)">
+                <th paged-result="Model.Users" sort-column="@nameof(Blog.Domain.Entities.User.LastName)">
                     @Html.DisplayNameFor(x => example.LastName)
                 </th>
-                <th paged-result="Model.Users" sort-column="@nameof(Blog.Domain.User.FirstName)">
+                <th paged-result="Model.Users" sort-column="@nameof(Blog.Domain.Entities.User.FirstName)">
                     @Html.DisplayNameFor(x => example.FirstName)
                 </th>
-                <th paged-result="Model.Users" sort-column="@nameof(Blog.Domain.User.Email)">
+                <th paged-result="Model.Users" sort-column="@nameof(Blog.Domain.Entities.User.Email)">
                     @Html.DisplayNameFor(x => example.Email)
                 </th>
             </tr>

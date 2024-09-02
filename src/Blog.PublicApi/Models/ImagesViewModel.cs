@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Blog.Domain;
+using Blog.Domain.Entities;
 using Blog.Localization;
 using Blog.PublicApi.Infrastructure.Paging;
 
