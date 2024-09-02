@@ -49,4 +49,4 @@ docker compose up
 
 ## My instance
 
-Запущен инстанс https://kellhus.xyz/
+Запущен инстанс https://kellhus.ru/
